@@ -15,7 +15,7 @@ int main() {
                 // Añadir este bloque para un retraso de 1 segundo
                 double start_time = omp_get_wtime();
                 while (omp_get_wtime() - start_time < 3) {
-                    // No hacer nada, solo esperar..
+                    // No hacer nada, solo esperar.
                 }
 
                 std::cout << "ya está" << std::endl;
