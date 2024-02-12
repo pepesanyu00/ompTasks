@@ -15,7 +15,7 @@ int main() {
         cout << "hola" << endl;
         for (int i = 0; i < 5; ++i) {
             int tid = omp_get_thread_num();
-            cout << "he entrado" << endl;
+            cout << "he entrado" << tid << endl;
             BEGIN_TRANSACTION(tid,0);
             cout << "he creado la transaccion" << endl;
             //omp_set_lock(&lock);
