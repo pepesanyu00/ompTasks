@@ -13,8 +13,8 @@ int main() {
     #pragma omp parallel num_threads(4)
     {
         cout << "hola" << endl;
+        int tid = omp_get_thread_num();
         for (int i = 0; i < 5; ++i) {
-            int tid = omp_get_thread_num();
             cout << "he entrado" << tid << endl;
             BEGIN_TRANSACTION(tid,0);
             cout << "he creado la transaccion" << endl;
