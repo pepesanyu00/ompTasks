@@ -27,7 +27,7 @@ int main() {
                 int tid = omp_get_thread_num();
                 BEGIN_TRANSACTION(tid,0);
                 variable = 17;
-                COMMIT_TRANSACTION();
+                COMMIT_TRANSACTION(tid,0);
                 std::cout << "ya está" << std::endl;
             }
 
@@ -37,7 +37,7 @@ int main() {
                 int tid = omp_get_thread_num();
                 BEGIN_TRANSACTION(tid,0);
                 std::cout << variable << std::endl;
-                COMMIT_TRANSACTION();
+                COMMIT_TRANSACTION(tid,0);
                 std::cout << "La variable ha sido rellenada, la segunda tarea puede ejecutarse." << std::endl;
             }
         }
