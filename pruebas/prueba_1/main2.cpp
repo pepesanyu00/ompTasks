@@ -4,14 +4,14 @@
 using namespace std;
 
 int main() {
-    int counter = 0;
+    double counter = 0;
     //omp_lock_t lock;
 
     //omp_init_lock(&lock);
 
     #pragma omp parallel num_threads(4)
     {
-        int tid = omp_get_thread_num();
+        long long int tid = omp_get_thread_num();
         INIT_TRANSACTION();
         #pragma omp for nowait
         for (int i = 0; i < 5; ++i) {
