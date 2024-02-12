@@ -15,7 +15,6 @@ volatile unsigned int g_ticketlock_turn = 1;
 
 volatile uint32_t g_lock_var = 0;
 fback_lock_t g_fallback_lock = {.ticket = 0, .turn = 1};
-g_spec_vars_t g_specvars = {.tx_order = 1};
 
 //RIC Archivo de estadísticas
 char fname[256];
@@ -44,34 +43,6 @@ struct Stats {
   char pad2[CACHE_BLOCK_SIZE];
 } **stats;
 
-void Barrier_init() {
-  sense = 0;
-  count = 0;
-  pthread_mutex_init(&bar_lock, NULL);
-}
-
-void Barrier_non_breaking(int* local_sense, int id, int num_thr) {
-  volatile int ret;
-
-  if ((*local_sense) == 0)
-    (*local_sense) = 1;
-  else
-    (*local_sense) = 0;
-
-  pthread_mutex_lock(&bar_lock);
-  count++;
-  ret = (count == num_thr);
-  pthread_mutex_unlock(&bar_lock);
-
-  if (ret) {
-    count = 0;
-    sense = (*local_sense);
-  } else {
-    while (sense != (*local_sense)) {
-      //usleep(1);     // For non-simulator runs
-    }
-  }
-}
 
 int statsFileInit(int argc, char **argv, long thCount) {
   int i,j;
