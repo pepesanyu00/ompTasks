@@ -20,7 +20,7 @@ int main() {
     {
         #pragma omp single
         {
-
+            INIT_TRANSACTION();
             #pragma omp task
             {
                 std::cout << "hola" << std::endl;
