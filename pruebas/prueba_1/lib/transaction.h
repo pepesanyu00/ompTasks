@@ -52,13 +52,13 @@ __p_failure##xId:                                              \
       __builtin_tabort(LOCK_TAKEN); /*Early subscription*/ \
   }
 
-#define COMMIT_TRANSACTION()                           \
+#define COMMIT_TRANSACTION(thId, xId)                           \
   if (__p_retries <= MAX_RETRIES) {                    \
     __builtin_tend(0);                                 \
-    profileCommit(__p_thId, __p_xId, __p_retries-1);   \
+    profileCommit(thId, xId, __p_retries-1);   \
   } else {                                             \
     __sync_add_and_fetch(&(g_fallback_lock.turn),1);  \
-    profileFallback(__p_thId, __p_xId, __p_retries-1); \
+    profileFallback(thId, xId, __p_retries-1); \
   }                                                    \
 }
 

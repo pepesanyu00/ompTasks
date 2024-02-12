@@ -16,7 +16,7 @@ int main() {
             //omp_set_lock(&lock);
             ++counter;
             //omp_unset_lock(&lock);
-            COMMIT_TRANSACTION();
+            COMMIT_TRANSACTION(tid,0);
         }
     }
 
