@@ -352,6 +352,7 @@ void profileFallback(long thread, long xid, long retries)
 //La modifico para que devuelva si fue VALIDATION_ERROR
 unsigned long profileAbortStatus(texasru_t cause, long thread, long xid)
 {
+  printf("Total: %lu\n ", cause);
   stats[thread][xid].xabortCount++;
   if (_TEXASRU_ABORT(cause))
   {

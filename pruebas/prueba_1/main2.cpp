@@ -14,10 +14,10 @@ int main() {
         long long int tid = omp_get_thread_num();
         INIT_TRANSACTION();
         #pragma omp for nowait
-        for (int i = 0; i < 5; ++i) {
+        for (long long int i = 0; i < 5; ++i) {
             cout << "he entrado" << tid << endl;
             BEGIN_TRANSACTION(tid,0);
-            cout << "he creado la transaccion" << endl;
+            //cout << "he creado la transaccion" << endl;
             //omp_set_lock(&lock);
             ++counter;
             //omp_unset_lock(&lock);
