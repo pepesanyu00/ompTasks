@@ -13,7 +13,7 @@ int main() {
     {
         int tid = omp_get_thread_num();
         INIT_TRANSACTION();
-        #pragma omp parallel for nowait
+        #pragma omp for nowait
         for (int i = 0; i < 5; ++i) {
             cout << "he entrado" << tid << endl;
             BEGIN_TRANSACTION(tid,0);
