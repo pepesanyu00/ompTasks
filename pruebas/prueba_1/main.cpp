@@ -12,7 +12,7 @@ tarea, cumpliendo con la dependencia.
 #include <omp.h>
 #include <ctime>
 
-#include "lib/transaction.h"
+#include "lib/tmPower.h"
 
 int main() {
     int variable = 0;
