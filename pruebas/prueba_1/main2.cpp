@@ -10,6 +10,7 @@ int main() {
 
     #pragma omp parallel num_threads(4)
     {
+        cout << "hola" << endl;
         for (int i = 0; i < 10000; ++i) {
             int tid = omp_get_thread_num();
             BEGIN_TRANSACTION(tid,0);
