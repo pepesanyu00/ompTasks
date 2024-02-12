@@ -1,6 +1,8 @@
 #include <omp.h>
 #include <iostream>
 #include "lib/transaction.h"
+#include <iostream>
+using namespace std;
 
 int main() {
     int counter = 0;
