@@ -1,3 +1,6 @@
+//código de ejemplo sencillo de dependencias en openmp, referencia a partir de la cual se desarrollará el código.
+
+
 #include <iostream>
 #include <omp.h>
 #include <ctime>

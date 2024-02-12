@@ -1,3 +1,6 @@
+// Esta es una prueba simple para comprobar que funcionan las transacciones y como lo hacen.
+
+
 #include <omp.h>
 #include <iostream>
 #include "lib/tmPower.h"
