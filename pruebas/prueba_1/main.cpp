@@ -23,22 +23,20 @@ int main() {
             INIT_TRANSACTION();
             #pragma omp task
             {
-                std::cout << "hola" << std::endl;
                 int tid = omp_get_thread_num();
+                cout << "tid1:" << tid << endl;
                 BEGIN_TRANSACTION(tid,0);
                 variable = 17;
                 COMMIT_TRANSACTION(tid,0);
-                std::cout << "ya está" << std::endl;
             }
 
-            std::cout << "he llegado" << std::endl;
             #pragma omp task
             {
                 int tid = omp_get_thread_num();
+                cout << "tid2:" << tid << endl;
                 BEGIN_TRANSACTION(tid,0);
                 std::cout << variable << std::endl;
                 COMMIT_TRANSACTION(tid,0);
-                std::cout << "La variable ha sido rellenada, la segunda tarea puede ejecutarse." << std::endl;
             }
         }
     }
