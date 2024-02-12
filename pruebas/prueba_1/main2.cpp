@@ -1,7 +1,6 @@
 #include <omp.h>
 #include <iostream>
-#include "lib/transaction.h"
-#include <iostream>
+#include "lib/tmPower.h"
 using namespace std;
 
 int main() {
@@ -12,7 +11,6 @@ int main() {
 
     #pragma omp parallel num_threads(4)
     {
-        cout << "hola" << endl;
         int tid = omp_get_thread_num();
         for (int i = 0; i < 5; ++i) {
             cout << "he entrado" << tid << endl;
