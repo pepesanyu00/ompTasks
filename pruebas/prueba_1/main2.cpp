@@ -12,6 +12,7 @@ int main() {
     #pragma omp parallel num_threads(4)
     {
         int tid = omp_get_thread_num();
+        INIT_TRANSACTION();
         for (int i = 0; i < 5; ++i) {
             cout << "he entrado" << tid << endl;
             BEGIN_TRANSACTION(tid,0);
