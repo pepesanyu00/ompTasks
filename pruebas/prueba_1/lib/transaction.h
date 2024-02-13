@@ -40,7 +40,6 @@
   texasru_t __p_abortCause;                               \
 __p_failure##xId:                                              \
   __p_abortCause = __builtin_get_texasru ();              \
-  if(__p_retries) profileAbortStatus(__p_abortCause, __p_thId, __p_xId);     \
   __p_retries++;                                          \
   if (__p_retries > MAX_RETRIES) {                        \
     uint32_t myticket = __sync_add_and_fetch(&(g_fallback_lock.ticket), 1);   \
@@ -52,13 +51,11 @@ __p_failure##xId:                                              \
       __builtin_tabort(LOCK_TAKEN); /*Early subscription*/ \
   }
 
-#define COMMIT_TRANSACTION()                           \
+#define COMMIT_TRANSACTION(thId, xId)                           \
   if (__p_retries <= MAX_RETRIES) {                    \
     __builtin_tend(0);                                 \
-    profileCommit(__p_thId, __p_xId, __p_retries-1);   \
   } else {                                             \
     __sync_add_and_fetch(&(g_fallback_lock.turn),1);  \
-    profileFallback(__p_thId, __p_xId, __p_retries-1); \
   }                                                    \
 }
 
@@ -87,6 +84,19 @@ typedef struct tm_tx {
                              * It is also reset after a successful commit. */
   uint8_t pad2[CACHE_BLOCK_SIZE-sizeof(uint32_t)*3-sizeof(uint8_t)];
 } __attribute__ ((aligned (CACHE_BLOCK_SIZE))) tm_tx_t;
+
+
+
+typedef struct fback_lock {
+  //RIC Para implementar el spinlock del fallback de Haswell
+  volatile uint32_t ticket;
+  volatile uint32_t turn;
+  uint8_t pad[CACHE_BLOCK_SIZE-sizeof(uint32_t)*2];
+} __attribute__ ((aligned (CACHE_BLOCK_SIZE))) fback_lock_t;
+
+extern fback_lock_t g_fallback_lock;
+extern pthread_mutex_t global_lock;
+extern volatile uint32_t g_lock_var;
 
 
 
