@@ -1,10 +1,7 @@
-/* Esta es una prueba inicial del programa, la intención es hacer una prueba sencilla con dos tareas, para comprobar
-si la memoria transaccional funciona para solucionar las dependencias entre tareas. Se implementarán dos tareas que trabajan
-con la misma variable, una la modifica, y la otra la lee y la imprime. Se implementará una transacción en cada tarea con el 
-objetivo de proteger los accesos a memoria cuando las dos tareas se estén ejecutando en paralelo.
-
-El objetivo principal de la prueba es comprobar si se mantiene la integridad de los datos al aplicar una transacción en cada 
-tarea, cumpliendo con la dependencia.
+/* Esta prueba es el mismo concepto que la primera, hay una variable que comienza con valor 0, se modifica en una tarea,
+y otra la imprime, esta vez se va a establecer un sistema de prioridades para comprobar si puede funcionar. A la hora de crear
+la transacción se le asigna una prioridad (indicada por el programador), de tal forma que la tarea con menos prioridad debe
+esperar a que la primera haga commit para ejecutarse.
 */
 
 

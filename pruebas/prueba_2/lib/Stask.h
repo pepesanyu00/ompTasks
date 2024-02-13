@@ -1,0 +1,38 @@
+/* Archivo para definir las tareas transaccionales. Esencialmente son transacciones con prioridades establecidas,
+siendo 0 la transacción con mayor prioridad y n-1 la de menor prioridad. Por ejemplo, si tenemos transacciones con
+prioridades 0 y 1, la transacción con prioridad 0 se ejecutará antes que la de prioridad 1, pero si la 1 entra en 
+begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutarse.
+*/
+
+#ifndef STASK_H_
+#define STASK_H_
+
+#include <pthread.h>
+#include <assert.h>
+#include <sys/syscall.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+#include "transaction.h"
+
+
+
+#define BEGIN_ESCAPE __builtin_tsuspend()
+#define END_ESCAPE __builtin_tresume()
+
+
+#define BEGIN_STASK(thId, xId, priority){                   \
+    if( priority > 0){                                      \
+                                                            \
+    }else if (priority == 0){                               \
+        BEGIN_TRANSACTION(thId, xId);                       \
+    }else{                                                  \
+        printf("Error: Prioridad no válida\n");             \
+        return 0;                                           \
+    }                                                       \
+}                                                           \
+
+
+#endif
