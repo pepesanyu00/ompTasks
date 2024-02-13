@@ -36,7 +36,6 @@
 {                                                         \
   __label__ __p_failure##xId;                                  \
   volatile long __p_retries = 0;                          \
-  texasru_t __p_abortCause;                               \
 __p_failure##xId:                                              \
   __p_abortCause = __builtin_get_texasru ();              \
   __p_retries++;                                          \
