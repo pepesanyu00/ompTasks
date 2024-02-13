@@ -3,7 +3,7 @@
 
 #include <omp.h>
 #include <iostream>
-#include "lib/tmPower.h"
+#include "lib/transaction.h"
 using namespace std;
 
 int main() {
@@ -15,7 +15,6 @@ int main() {
     #pragma omp parallel num_threads(4)
     {
         long long int tid = omp_get_thread_num();
-        INIT_TRANSACTION();
         for (long long int i = 0; i < 5; ++i) {
             BEGIN_TRANSACTION(tid,0);
             //cout << "he creado la transaccion" << endl;
@@ -23,7 +22,7 @@ int main() {
             ++counter;
             std::cout << "Counter: " << counter <<"," << tid << std::endl;
             //omp_unset_lock(&lock);
-            COMMIT_TRANSACTION(tid,0);
+            COMMIT_TRANSACTION();
         }
     }
 

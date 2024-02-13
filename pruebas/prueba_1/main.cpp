@@ -12,7 +12,9 @@ tarea, cumpliendo con la dependencia.
 #include <omp.h>
 #include <ctime>
 
-#include "lib/tmPower.h"
+#include "lib/transaction.h"
+
+using namespace std;
 
 int main() {
     int variable = 0;
@@ -20,14 +22,13 @@ int main() {
     {
         #pragma omp single
         {
-            INIT_TRANSACTION();
             #pragma omp task
             {
                 int tid = omp_get_thread_num();
                 cout << "tid1:" << tid << endl;
                 BEGIN_TRANSACTION(tid,0);
                 variable = 17;
-                COMMIT_TRANSACTION(tid,0);
+                COMMIT_TRANSACTION();
             }
 
             #pragma omp task
@@ -36,7 +37,7 @@ int main() {
                 cout << "tid2:" << tid << endl;
                 BEGIN_TRANSACTION(tid,0);
                 std::cout << variable << std::endl;
-                COMMIT_TRANSACTION(tid,0);
+                COMMIT_TRANSACTION();
             }
         }
     }
