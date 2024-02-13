@@ -37,7 +37,6 @@
   __label__ __p_failure##xId;                                  \
   volatile long __p_retries = 0;                          \
 __p_failure##xId:                                              \
-  __p_abortCause = __builtin_get_texasru ();              \
   __p_retries++;                                          \
   if (__p_retries > MAX_RETRIES) {                        \
     uint32_t myticket = __sync_add_and_fetch(&(g_fallback_lock.ticket), 1);   \
