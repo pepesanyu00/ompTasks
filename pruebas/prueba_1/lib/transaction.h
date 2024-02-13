@@ -36,7 +36,6 @@
 {                                                         \
   __label__ __p_failure##xId;                                  \
   volatile long __p_retries = 0;                          \
-  long __p_thId = thId, __p_xId = xId;                    \
   texasru_t __p_abortCause;                               \
 __p_failure##xId:                                              \
   __p_abortCause = __builtin_get_texasru ();              \
@@ -51,7 +50,7 @@ __p_failure##xId:                                              \
       __builtin_tabort(LOCK_TAKEN); /*Early subscription*/ \
   }
 
-#define COMMIT_TRANSACTION(thId, xId)                           \
+#define COMMIT_TRANSACTION()                           \
   if (__p_retries <= MAX_RETRIES) {                    \
     __builtin_tend(0);                                 \
   } else {                                             \
