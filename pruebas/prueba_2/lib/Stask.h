@@ -35,10 +35,9 @@ list<int> priorityList;
         BEGIN_TRANSACTION(thId, xId);                                       \
     } else{                                                                  \
         printf("Error: Prioridad no válida\n");                             \
-        return 0;                                                           \
-    }                                                                       \
+    }
 
-#define COMMIT_STASK()                                                      \
+#define COMMIT_STASK(priority)                                                      \
     COMMIT_TRANSACTION();                                                   \
     priorityList.push_back(priority);                                       \
 }                                                                           \

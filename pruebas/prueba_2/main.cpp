@@ -25,7 +25,7 @@ int main() {
                 cout << "tid1:" << tid << endl;
                 BEGIN_STASK(tid,0,0);
                 variable = 17;
-                COMMIT_STASK();
+                COMMIT_STASK(0);
             }
 
             #pragma omp task
@@ -34,7 +34,7 @@ int main() {
                 cout << "tid2:" << tid << endl;
                 BEGIN_STASK(tid,0,1);
                 cout << variable << endl;
-                COMMIT_STASK();
+                COMMIT_STASK(1);
             }
         }
     }
