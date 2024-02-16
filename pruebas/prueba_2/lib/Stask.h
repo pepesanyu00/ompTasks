@@ -14,25 +14,33 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <list>
 #include "transaction.h"
-
+using namespace std;
 
 
 #define BEGIN_ESCAPE __builtin_tsuspend()
 #define END_ESCAPE __builtin_tresume()
 
+//Lista en la que se almacena la prioridad de las transacciones que han hecho commit
+list<int> priorityList;
 
-#define BEGIN_STASK(thId, xId, priority){                   \
-    if( priority > 0){                                      \
-                                                            \
-    }else if (priority == 0){                               \
-        BEGIN_TRANSACTION(thId, xId);                       \
-    }else{                                                  \
-        printf("Error: Prioridad no válida\n");             \
-        return 0;                                           \
-    }                                                       \
-}                                                           \
+#define BEGIN_STASK(thId, xId, priority){                                   \
+    if( priority > 0){                                                      \
+        while(!find(priorityList.begin(),priorityList.end(),priority-1)){   \
+        }                                                                   \
+        BEGIN_TRANSACTION(thId, xId);                                       \
+    }else if (priority == 0){                                               \
+        BEGIN_TRANSACTION(thId, xId);                                       \
+    }else{                                                                  \
+        printf("Error: Prioridad no válida\n");                             \
+        return 0;                                                           \
+    }                                                                       \
+
+#define COMMIT_STAKS()                                                      \
+    COMMIT_TRANSACTION();                                                   \
+    priorityList.push_back(priority);                                       \
+}                                                                           \
 
 
 #endif

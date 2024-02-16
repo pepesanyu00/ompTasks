@@ -9,7 +9,7 @@ esperar a que la primera haga commit para ejecutarse.
 #include <omp.h>
 #include <ctime>
 
-#include "lib/transaction.h"
+#include "lib/Stask.h"
 
 using namespace std;
 
@@ -23,18 +23,18 @@ int main() {
             {
                 int tid = omp_get_thread_num();
                 cout << "tid1:" << tid << endl;
-                BEGIN_TRANSACTION(tid,0);
+                BEGIN_STASK(tid,0,0);
                 variable = 17;
-                COMMIT_TRANSACTION();
+                COMMIT_STASK();
             }
 
             #pragma omp task
             {
                 int tid = omp_get_thread_num();
                 cout << "tid2:" << tid << endl;
-                BEGIN_TRANSACTION(tid,0);
+                BEGIN_STASK(tid,0,1);
                 cout << variable << endl;
-                COMMIT_TRANSACTION();
+                COMMIT_STASK();
             }
         }
     }
