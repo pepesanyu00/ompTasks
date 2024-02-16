@@ -31,14 +31,14 @@ list<int> priorityList;
         while(find(priorityList.begin(),priorityList.end(),priority-1) == priorityList.end()){   \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
-    }else if (priority == 0){                                               \
+    } else if (priority == 0){                                               \
         BEGIN_TRANSACTION(thId, xId);                                       \
-    }else{                                                                  \
+    } else{                                                                  \
         printf("Error: Prioridad no válida\n");                             \
         return 0;                                                           \
     }                                                                       \
 
-#define COMMIT_STAKS()                                                      \
+#define COMMIT_STASK()                                                      \
     COMMIT_TRANSACTION();                                                   \
     priorityList.push_back(priority);                                       \
 }                                                                           \
