@@ -26,7 +26,8 @@ using namespace std;
 //Lista en la que se almacena la prioridad de las transacciones que han hecho commit
 list<int> priorityList;
 
-#define BEGIN_STASK(thId, xId, priority){                                   \
+#define BEGIN_STASK(thId, xId, priority)                                    \
+{                                                                           \
     if( priority > 0){                                                      \
         while(find(priorityList.begin(),priorityList.end(),priority-1) == priorityList.end()){   \
         }                                                                   \
@@ -40,7 +41,7 @@ list<int> priorityList;
 #define COMMIT_STASK(priority)                                                      \
     COMMIT_TRANSACTION();                                                   \
     priorityList.push_back(priority);                                       \
-}                                                                           \
+}
 
 
 #endif
