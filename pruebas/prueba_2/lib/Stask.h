@@ -15,6 +15,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <unistd.h>
 #include <stdlib.h>
 #include <list>
+#include <algorithm>
 #include "transaction.h"
 using namespace std;
 
@@ -27,7 +28,7 @@ list<int> priorityList;
 
 #define BEGIN_STASK(thId, xId, priority){                                   \
     if( priority > 0){                                                      \
-        while(!find(priorityList.begin(),priorityList.end(),priority-1)){   \
+        while(find(priorityList.begin(),priorityList.end(),priority-1) == priorityList.end()){   \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if (priority == 0){                                               \
