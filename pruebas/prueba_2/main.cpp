@@ -26,6 +26,7 @@ int main() {
                 BEGIN_STASK(tid,0,0);
                 variable = 17;
                 COMMIT_STASK(tid,0,0);
+                cout << "variable despues de primera transaccion: " << variable << endl;
             }
 
             #pragma omp task
