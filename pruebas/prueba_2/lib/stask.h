@@ -29,7 +29,7 @@ extern list<int> priorityList;
 #define BEGIN_STASK(thId, xId, priority)                                    \
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                      \
-        while(find(priorityList.begin(),priorityList.end(),priority-1) == priorityList.end()){   \
+        while(!find(priorityList.begin(),priorityList.end(),priority-1)){   \
             printf(" lista: %i\n",priorityList.front());                                        \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
