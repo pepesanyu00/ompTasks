@@ -6,3 +6,4 @@ all: tasks
 tasks: main.cpp lib/transaction.c lib/stask.cpp
 	g++ $(CFLAGS) main.cpp lib/transaction.c lib/stask.cpp -o tasks $(LFLAGS)
 
+clean: rm -f tasks
