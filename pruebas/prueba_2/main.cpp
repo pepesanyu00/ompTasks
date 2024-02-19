@@ -34,7 +34,7 @@ int main() {
                 cout << "tid2:" << tid << endl;
                 BEGIN_STASK(tid,0,1);
                 cout << variable << endl;
-                COMMIT_STASK(1);
+                COMMIT_STASK(tid,0,1);
             }
         }
     }

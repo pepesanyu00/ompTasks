@@ -31,30 +31,43 @@
 #define BEGIN_ESCAPE __builtin_tsuspend()
 #define END_ESCAPE __builtin_tresume()
 
-//Con ticket lock
-#define BEGIN_TRANSACTION(thId, xId)                      \
-{                                                         \
-  __label__ __p_failure##xId;                                  \
-  volatile long __p_retries = 0;                          \
-__p_failure##xId:                                              \
-  __p_retries++;                                          \
-  if (__p_retries > MAX_RETRIES) {                        \
-    uint32_t myticket = __sync_add_and_fetch(&(g_fallback_lock.ticket), 1);   \
-    while(myticket != g_fallback_lock.turn) ;             \
-  } else {                                                \
-    while (g_fallback_lock.ticket >= g_fallback_lock.turn) ; \
-    if(!__builtin_tbegin(0)) goto __p_failure##xId;         \
-    if (g_fallback_lock.ticket >= g_fallback_lock.turn)   \
-      __builtin_tabort(LOCK_TAKEN); /*Early subscription*/ \
-  }
+#define INIT_TRANSACTION() \
+  uint32_t __p_retries
 
-#define COMMIT_TRANSACTION()                           \
-  if (__p_retries <= MAX_RETRIES) {                    \
-    __builtin_tend(0);                                 \
-  } else {                                             \
-    __sync_add_and_fetch(&(g_fallback_lock.turn),1);  \
-  }                                                    \
-}
+//Con ticket lock
+#define BEGIN_TRANSACTION(thId, xId)                                                           \
+  __p_retries = 0;                                                                             \
+  do                                                                                           \
+  {                                                                                            \
+    if (__p_retries)                                                                           \
+      profileAbortStatus(__builtin_get_texasru(), thId, xId);                                  \
+    __p_retries++;                                                                             \
+    if (__p_retries > MAX_RETRIES)                                                             \
+    {                                                                                          \
+      /*uint32_t myticket = __sync_add_and_fetch(&(g_fallback_lock.ticket), 1); */             \
+      uint32_t myticket = __atomic_add_fetch(&(g_fallback_lock.ticket), 1, __ATOMIC_SEQ_CST); \
+      while (myticket != g_fallback_lock.turn)                                                 \
+        ;                                                                                      \
+      break;                                                                                   \
+    }                                                                                          \
+    while (g_fallback_lock.ticket >= g_fallback_lock.turn)                                     \
+      ;                                                                                        \
+  } while (!__builtin_tbegin(0))
+
+#define COMMIT_TRANSACTION(thId, xId)                                 \
+  if (__p_retries <= MAX_RETRIES)                                     \
+  {                                                                   \
+    if (g_fallback_lock.ticket >= g_fallback_lock.turn)               \
+      __builtin_tabort(LOCK_TAKEN); /*Early subscription*/            \
+    __builtin_tend(0);                                                \
+    profileCommit(thId, xId, __p_retries - 1);                        \
+  }                                                                   \
+  else                                                                \
+  {                                                                   \
+    /* __sync_add_and_fetch(&(g_fallback_lock.turn), 1); */           \
+    __atomic_add_fetch(&(g_fallback_lock.turn), 1, __ATOMIC_SEQ_CST); \
+    profileFallback(thId, xId, __p_retries - 1);                      \
+  }                                               
 
 
 /* Transaction descriptor. It is aligned (including stats) to CACHELINE_SIZE
