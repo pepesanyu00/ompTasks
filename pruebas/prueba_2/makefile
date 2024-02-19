@@ -1,4 +1,4 @@
-CFLAGS = -O2 -Wall -std=c++11 -march=native
+CFLAGS = -O2 -Wall -std=c++11 
 LFLAGS = -lm -fopenmp
 
 all: tasks
