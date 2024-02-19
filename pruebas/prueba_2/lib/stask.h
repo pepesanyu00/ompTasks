@@ -28,11 +28,14 @@ extern list<int> priorityList;
 
 #define BEGIN_STASK(thId, xId, priority)                                    \
     INIT_TRANSACTION();                                                     \
-    if(priority > 0){                                                      \
-        while(count(priorityList.begin(),priorityList.end(),priority-1) == 0 or priorityList.empty()){   \
+    if(priority > 0){                                                       \
+        while(true){                                                        \
+            if( !(count(priorityList.begin(),priorityList.end(),priority-1) == 0 or priorityList.empty())){   \
+                    break;                                                  \
+            }                                                               \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
-    }else if(priority == 0){                                               \
+    }else if(priority == 0){                                                \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else{                                                                  \
         printf("Error: Prioridad no válida\n");                             \
