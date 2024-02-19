@@ -30,7 +30,7 @@ extern list<int> priorityList;
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                      \
         while(count(priorityList.begin(),priorityList.end(),priority-1) == 0){   \
-                cout << "lista " << priorityList.begin() << endl;           \
+                cout << "lista " << *priorityList.begin() << endl;           \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if(priority == 0){                                               \
