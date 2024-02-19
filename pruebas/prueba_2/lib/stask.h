@@ -30,7 +30,6 @@ extern list<int> priorityList;
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                      \
         while(count(priorityList.begin(),priorityList.end(),priority-1) == 0 or priorityList.empty()){   \
-                cout << "lista " << *priorityList.begin() << endl;           \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if(priority == 0){                                               \
@@ -41,7 +40,7 @@ extern list<int> priorityList;
 
 #define COMMIT_STASK(thId, xId, priority)                                   \
     COMMIT_TRANSACTION(thId,xId);                                                   
-    //priorityList.push_back(priority);                                       
+    priorityList.push_back(priority);                                       
 
 
 
