@@ -3,6 +3,6 @@ LFLAGS = -lm -fopenmp
 
 all: tasks
 
-tasks: main.cpp transaction.c Stask.cpp
-	g++ $(CFLAGS) main.cpp transaction.c Stask.cpp -o tasks $(LFLAGS)
+tasks: main.cpp lib/transaction.c lib/stask.cpp
+	g++ $(CFLAGS) main.cpp lib/transaction.c lib/stask.cpp -o tasks $(LFLAGS)
 

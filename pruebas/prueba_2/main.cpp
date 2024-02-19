@@ -9,7 +9,7 @@ esperar a que la primera haga commit para ejecutarse.
 #include <omp.h>
 #include <ctime>
 
-#include "lib/Stask.h"
+#include "lib/stask.h"
 
 using namespace std;
 
