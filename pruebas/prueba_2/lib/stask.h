@@ -30,7 +30,7 @@ extern list<int> priorityList;
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                      \
         while(find(priorityList.begin(),priorityList.end(),priority-1) == priorityList.end()){   \
-            printf("%i\n",priorityList);                                        \
+            printf(" lista: %i\n",priorityList);                                        \
         }                                                                   \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if(priority == 0){                                               \
