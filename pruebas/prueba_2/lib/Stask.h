@@ -39,7 +39,7 @@ extern list<int> priorityList;
     }
 
 #define COMMIT_STASK(thId, xId, priority)                                   \
-    COMMIT_TRANSACTION();                                                   \
+    COMMIT_TRANSACTION(thId,xId);                                                   \
     priorityList.push_back(priority);                                       
 
 
