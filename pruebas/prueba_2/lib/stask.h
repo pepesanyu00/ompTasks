@@ -47,8 +47,8 @@ extern list<int> priorityList;
 #define COMMIT_STASK(thId, xId, priority)                                   \
     printf("He entrado en el commit, id%i\n",thId);                         \
     COMMIT_TRANSACTION(thId,xId);                                           \
-    printf("He pasado el commit, id%i\n",thId);                             \
-    priorityList.push_back(priority);                                       
+    priorityList.push_back(priority);                                       \
+    printf("He pasado el commit, id%i, lista: %i\n",thId,priorityList.size());                             
 
 
 
