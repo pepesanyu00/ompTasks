@@ -31,7 +31,7 @@ extern list<int> priorityList;
     if(priority > 0){                                                       \
         printf(" he entrado en el if");                                     \
         while(!(count(priorityList.begin(),priorityList.end(),priority-1) == 0 or priorityList.empty())){   \
-            print("he entrado en el while");                                \
+            printf("he entrado en el while");                                \
         }                                                                   \
         printf(" he pasado el bucle");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
