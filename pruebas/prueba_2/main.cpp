@@ -26,7 +26,6 @@ int main() {
                 BEGIN_STASK(tid,0,0);
                 variable = 17;
                 COMMIT_STASK(tid,0,0);
-                cout << "variable despues de primera transaccion: " << variable << endl;
             }
 
             #pragma omp task
@@ -34,7 +33,7 @@ int main() {
                 int tid = omp_get_thread_num();
                 cout << "tid2:" << tid << endl;
                 BEGIN_STASK(tid,0,1);
-                cout << variable << endl;
+                cout << "variable en segunda tarea: " << variable << endl;
                 COMMIT_STASK(tid,0,1);
             }
         }
