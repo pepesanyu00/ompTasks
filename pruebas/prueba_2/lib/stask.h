@@ -30,8 +30,10 @@ extern list<int> priorityList;
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                       \
         printf(" he entrado en el if\n");                                     \
+        BEGIN_ESCAPE;                                                       \
         while((count(priorityList.begin(),priorityList.end(),priority-1) == 0)){   \
         }                                                                   \
+        END_ESCAPE;                                                         \
         printf(" he pasado el bucle\n");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if(priority == 0){                                                \
