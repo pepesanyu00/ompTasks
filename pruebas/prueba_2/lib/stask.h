@@ -29,11 +29,11 @@ extern list<int> priorityList;
 #define BEGIN_STASK(thId, xId, priority)                                    \
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                       \
-        while(true){                                                        \
-            if( !(count(priorityList.begin(),priorityList.end(),priority-1) == 0 or priorityList.empty())){   \
-                    break;                                                  \
-            }                                                               \
+        printf(" he entrado en el if");                                     \
+        while(!(count(priorityList.begin(),priorityList.end(),priority-1) == 0 or priorityList.empty())){   \
+            print("he entrado en el while");                                \
         }                                                                   \
+        printf(" he pasado el bucle");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if(priority == 0){                                                \
         BEGIN_TRANSACTION(thId, xId);                                       \
