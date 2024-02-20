@@ -32,7 +32,7 @@ extern list<int> priorityList;
         printf(" he entrado en el if\n");                                     \
         BEGIN_ESCAPE;                                                       \
         while((count(priorityList.begin(),priorityList.end(),priority-1) == 0)){   \
-                    printf(" lista: %i, size: %i", lista.front(), lista.size());                                     \
+                    printf(" lista: %i, size: %i", priorityList.front(), priorityList.size());                                     \
         }                                                                   \
         END_ESCAPE;                                                         \
         printf(" he pasado el bucle\n");                                      \
