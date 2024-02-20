@@ -39,5 +39,7 @@ int main() {
         }
     }
 
+    cout << "variable fuera: " << variable << endl;
+
     return 0;
 }
