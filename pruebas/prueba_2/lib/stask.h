@@ -36,6 +36,7 @@ extern list<int> priorityList;
         printf(" he pasado el bucle\n");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else if(priority == 0){                                                \
+        printf(" he iniciado la transaccion\n");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
     }else{                                                                  \
         printf("Error: Prioridad no válida\n");                             \
