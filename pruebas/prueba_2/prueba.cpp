@@ -52,25 +52,29 @@ int main()
     int variable = 0;
 #pragma omp parallel
     {
-#pragma omp task shared(variable)
+    #pragma omp single
             {
-                int tid = omp_get_thread_num();
-                cout << "tid1:" << tid << endl;
-                BEGIN_STASK(tid, 0, 0);
-                variable = 17;
-                COMMIT_STASK(tid, 0, 0);
-            }
-
-#pragma omp task shared(variable)
+        #pragma omp task shared(variable)
+                    {
+                        int tid = omp_get_thread_num();
+                        cout << "tid1:" << tid << endl;
+                        BEGIN_STASK(tid, 0, 0);
+                        variable = 17;
+                        COMMIT_STASK(tid, 0, 0);
+                    }
+    }
+    #pragma omp single
             {
-                int tid = omp_get_thread_num();
-                cout << "tid2:" << tid << endl;
-                BEGIN_STASK(tid, 0, 1);
-                cout << "variable en segunda tarea: " << variable << endl;
-                COMMIT_STASK(tid, 0, 1);
+        #pragma omp task shared(variable)
+                    {
+                        int tid = omp_get_thread_num();
+                        cout << "tid2:" << tid << endl;
+                        BEGIN_STASK(tid, 0, 1);
+                        cout << "variable en segunda tarea: " << variable << endl;
+                        COMMIT_STASK(tid, 0, 1);
+                    }
             }
     }
-
     cout << "variable fuera: " << variable << endl;
 
     return 0;
