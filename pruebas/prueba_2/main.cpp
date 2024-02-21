@@ -19,7 +19,7 @@ int main() {
     {
         #pragma omp single
         {
-            #pragma omp task
+            #pragma omp task shared(variable)
             {
                 int tid = omp_get_thread_num();
                 cout << "tid1:" << tid << endl;
@@ -28,7 +28,7 @@ int main() {
                 COMMIT_STASK(tid,0,0);
             }
 
-            #pragma omp task
+            #pragma omp task shared(variable)
             {
                 int tid = omp_get_thread_num();
                 cout << "tid2:" << tid << endl;
