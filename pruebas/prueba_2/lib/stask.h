@@ -27,11 +27,12 @@ using namespace std;
 extern list<int> priorityList;
 
 #define BEGIN_STASK(thId, xId, priority)                                    \
-    volatile int p = priority;                                       \
+    volatile int dummy;                                                     \
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                       \
         printf(" he entrado en el if\n");                                   \
         while((count(priorityList.begin(),priorityList.end(),p-1) == 0)){   \
+            dummy = 0;                                                      \
         }                                                                   \
         printf(" he pasado el bucle\n");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
