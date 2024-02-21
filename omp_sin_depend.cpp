@@ -15,13 +15,14 @@ int main() {
                 variable = 17;
                 std::cout << "ya está" << std::endl;
             }
-
+        }
+        #pragma omp single
+        {
             std::cout << "he llegado" << std::endl;
             #pragma omp task
             {
                 // Esta tarea no se ejecutará hasta que la variable esté rellena
                 std::cout << variable << std::endl;
-                std::cout << "La variable ha sido rellenada, la segunda tarea puede ejecutarse." << std::endl;
             }
         }
     }
