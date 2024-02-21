@@ -26,26 +26,26 @@ using namespace std;
 //Lista en la que se almacena la prioridad de las transacciones que han hecho commit
 extern list<int> priorityList;
 
-#define BEGIN_STASK(thId, xId, priority)                                    \
-    INIT_TRANSACTION();                                                     \
-    if(priority > 0){                                                       \
-        printf(" he entrado en el if\n");                                   \
-        while((count(priorityList.begin(),priorityList.end(),priority-1) == 0)){   \
-        }                                                                   \
-        printf(" he pasado el bucle\n");                                      \
-        BEGIN_TRANSACTION(thId, xId);                                       \
-    }else if(priority == 0){                                                \
-        printf(" he iniciado la transaccion\n");                                      \
-        BEGIN_TRANSACTION(thId, xId);                                       \
-        printf(" he pasado el inicio de la transaccion\n");                                      \
-    }else{                                                                  \
-        printf("Error: Prioridad no válida\n");                             \
+#define BEGIN_STASK(thId, xId, priority)                                            \
+    INIT_TRANSACTION();                                                             \
+    if(priority > 0){                                                               \
+        printf(" he entrado en el if\n");                                           \
+        while((count(priorityList.begin(),priorityList.end(),priority-1) == 0)){    \
+        }                                                                           \
+        printf(" he pasado el bucle\n");                                            \
+        BEGIN_TRANSACTION(thId, xId);                                               \
+    }else if(priority == 0){                                                        \
+        printf(" he iniciado la transaccion\n");                                    \
+        BEGIN_TRANSACTION(thId, xId);                                               \
+        printf(" he pasado el inicio de la transaccion\n");                         \
+    }else{                                                                          \
+        printf("Error: Prioridad no válida\n");                                     \
     }
 
-#define COMMIT_STASK(thId, xId, priority)                                   \
-    printf("He entrado en el commit, id%i\n",thId);                         \
-    priorityList.push_back(priority);                                       \
-    COMMIT_TRANSACTION(thId,xId);                                           \
+#define COMMIT_STASK(thId, xId, priority)                                           \
+    printf("He entrado en el commit, id%i\n",thId);                                 \
+    priorityList.push_back(priority);                                               \
+    COMMIT_TRANSACTION(thId,xId);                                                   \
     printf("He pasado el commit, id%i, lista: %i\n",thId,priorityList.size());                             
 
 
