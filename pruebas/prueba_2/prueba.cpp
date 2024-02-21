@@ -12,7 +12,6 @@ list<int> priorityList;
 mutex listMutex;
 
 #define BEGIN_STASK(thId, xId, priority)                                    \
-    {                                                                         \
         INIT_TRANSACTION();                                                   \
         if (priority > 0)                                                     \
         {                                                                     \
@@ -32,17 +31,15 @@ mutex listMutex;
         else                                                                  \
         {                                                                     \
             printf("Error: Prioridad no válida\n");                           \
-        }                                                                     \
-    }
+        }                                                                     
 
 #define COMMIT_STASK(thId, xId, priority)                                    \
-    {                                                                         \
         printf("He entrado en el commit, id%i\n", thId);                      \
         COMMIT_TRANSACTION(thId, xId);                                        \
         lock_guard<mutex> guard(listMutex);                                   \
         priorityList.push_back(priority);                                     \
-        printf("He pasado el commit, id%i, lista: %i\n", thId, priorityList.size()); \
-    }
+        printf("He pasado el commit, id%i, lista: %i\n", thId, priorityList.size()); 
+
 
 bool priorityFound(int priority)
 {
