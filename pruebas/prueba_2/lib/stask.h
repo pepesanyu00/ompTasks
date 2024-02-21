@@ -27,12 +27,10 @@ using namespace std;
 extern list<int> priorityList;
 
 #define BEGIN_STASK(thId, xId, priority)                                    \
-    volatile int dummy;                                                     \
     INIT_TRANSACTION();                                                     \
     if(priority > 0){                                                       \
         printf(" he entrado en el if\n");                                   \
         while((count(priorityList.begin(),priorityList.end(),priority-1) == 0)){   \
-            dummy = 0;                                                      \
         }                                                                   \
         printf(" he pasado el bucle\n");                                      \
         BEGIN_TRANSACTION(thId, xId);                                       \
@@ -46,8 +44,8 @@ extern list<int> priorityList;
 
 #define COMMIT_STASK(thId, xId, priority)                                   \
     printf("He entrado en el commit, id%i\n",thId);                         \
-    COMMIT_TRANSACTION(thId,xId);                                           \
     priorityList.push_back(priority);                                       \
+    COMMIT_TRANSACTION(thId,xId);                                           \
     printf("He pasado el commit, id%i, lista: %i\n",thId,priorityList.size());                             
 
 
