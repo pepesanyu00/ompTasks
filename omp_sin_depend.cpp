@@ -18,7 +18,6 @@ int main() {
         }
         #pragma omp single
         {
-            std::cout << "he llegado" << std::endl;
             #pragma omp task shared(variable)
             {
                 // Esta tarea no se ejecutará hasta que la variable esté rellena
