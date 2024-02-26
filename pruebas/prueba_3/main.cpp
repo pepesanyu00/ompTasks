@@ -22,7 +22,9 @@ int main() {
                 int tid = omp_get_thread_num();
                 cout << "tid1:" << tid << endl;
                 //BEGIN_STASK(tid,0,0);
-                variable++;
+                for(int i = 0; i < 1000; i++){
+                    variable++;
+                }
                 //COMMIT_STASK(tid,0,0);
             }
             #pragma omp task shared(variable)
@@ -30,7 +32,9 @@ int main() {
                 int tid = omp_get_thread_num();
                 cout << "tid2:" << tid << endl;
                 //BEGIN_STASK(tid,0,1);
-                variable++;
+                for(int i = 0; i < 1000; i++){
+                    variable++;
+                }
                 //COMMIT_STASK(tid,0,1);
             }
         }
