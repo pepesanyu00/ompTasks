@@ -55,21 +55,26 @@ int main()
     #pragma omp single
     {
         #pragma omp task shared(variable)
-                    {
-                        int tid = omp_get_thread_num();
-                        cout << "tid1:" << tid << endl;
-                        BEGIN_STASK(tid, 0, 0);
-                        variable = 17;
-                        COMMIT_STASK(tid, 0, 0);
-                    }
+        {
+            int tid = omp_get_thread_num();
+            cout << "tid1:" << tid << endl;
+            int local_variable = 0; // Copia local de la variable
+            BEGIN_STASK(tid, 0, 0);
+            local_variable = 17; // Actualizar la copia local
+            variable = local_variable; // Actualizar la variable compartida
+            COMMIT_STASK(tid, 0, 0);
+        }
+
         #pragma omp task shared(variable)
-                    {
-                        int tid = omp_get_thread_num();
-                        cout << "tid2:" << tid << endl;
-                        BEGIN_STASK(tid, 0, 1);
-                        cout << "variable en segunda tarea: " << variable << endl;
-                        COMMIT_STASK(tid, 0, 1);
-                    }
+        {
+            int tid = omp_get_thread_num();
+            cout << "tid2:" << tid << endl;
+            int local_variable = 0; // Copia local de la variable
+            BEGIN_STASK(tid, 0, 1);
+            local_variable = variable; // Leer la variable compartida
+            cout << "variable en segunda tarea: " << local_variable << endl;
+            COMMIT_STASK(tid, 0, 1);
+        }
     }
     }
     cout << "variable fuera: " << variable << endl;
