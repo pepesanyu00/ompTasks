@@ -31,7 +31,7 @@ int main() {
             {
                 int tid = omp_get_thread_num();
                 std::cout << "tid2:" << tid << endl;
-                sleep(1)
+                sleep(1);
                 BEGIN_STASK(tid,0,1);
                 std::cout << "variable en segunda tarea: " << variable << endl;
                 COMMIT_STASK(tid,0,1);
