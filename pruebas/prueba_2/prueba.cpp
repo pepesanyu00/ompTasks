@@ -11,6 +11,9 @@ using namespace std;
 list<int> priorityList;
 mutex listMutex;
 
+#define BEGIN_ESCAPE __builtin_tsuspend()
+#define END_ESCAPE __builtin_tresume()
+
 #define BEGIN_STASK(thId, xId, priority)                                    \
         INIT_TRANSACTION();                                                   \
         if (priority > 0)                                                     \
@@ -58,10 +61,8 @@ int main()
         {
             int tid = omp_get_thread_num();
             cout << "tid1:" << tid << endl;
-            int local_variable = 0; // Copia local de la variable
             BEGIN_STASK(tid, 0, 0);
-            local_variable = 17; // Actualizar la copia local
-            variable = local_variable; // Actualizar la variable compartida
+            variable = 17;
             COMMIT_STASK(tid, 0, 0);
         }
 
@@ -69,10 +70,10 @@ int main()
         {
             int tid = omp_get_thread_num();
             cout << "tid2:" << tid << endl;
-            int local_variable = 0; // Copia local de la variable
             BEGIN_STASK(tid, 0, 1);
-            local_variable = variable; // Leer la variable compartida
-            cout << "variable en segunda tarea: " << local_variable << endl;
+            BEGIN_ESCAPE;
+            cout << "variable en segunda tarea: " << variable << endl;
+            END_ESCAPE;
             COMMIT_STASK(tid, 0, 1);
         }
     }
