@@ -25,7 +25,6 @@ int main() {
                 variable++;
                 //COMMIT_STASK(tid,0,0);
             }
-        }
             #pragma omp task shared(variable)
             {
                 int tid = omp_get_thread_num();
@@ -34,6 +33,7 @@ int main() {
                 variable++;
                 //COMMIT_STASK(tid,0,1);
             }
+        }
     }
 
     cout << "variable fuera: " << variable << endl;
