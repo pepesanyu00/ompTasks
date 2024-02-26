@@ -10,4 +10,4 @@ prueba: prueba.cpp lib/transaction.c
 	g++ $(CFLAGS) prueba.cpp lib/transaction.c -o prueba $(LFLAGS)
 
 clean:
-	rm -f tasks
+	rm -f tasks prueba
