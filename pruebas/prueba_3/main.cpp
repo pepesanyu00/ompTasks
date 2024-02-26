@@ -22,7 +22,7 @@ int main() {
                 int tid = omp_get_thread_num();
                 cout << "tid1:" << tid << endl;
                 //BEGIN_STASK(tid,0,0);
-                for(int i = 0; i < 10000000; i++){
+                for(int i = 0; i < 1000000000; i++){
                     variable++;
                 }
                 //COMMIT_STASK(tid,0,0);
@@ -32,7 +32,7 @@ int main() {
                 int tid = omp_get_thread_num();
                 cout << "tid2:" << tid << endl;
                 //BEGIN_STASK(tid,0,1);
-                for(int i = 0; i < 10000000; i++){
+                for(int i = 0; i < 1000000000; i++){
                     variable++;
                 }
                 //COMMIT_STASK(tid,0,1);
