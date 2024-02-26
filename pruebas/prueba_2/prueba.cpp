@@ -66,6 +66,7 @@ int main()
                     {
                         int tid = omp_get_thread_num();
                         cout << "tid2:" << tid << endl;
+                        #pragma omp barrier
                         BEGIN_STASK(tid, 0, 1);
                         cout << "variable en segunda tarea: " << variable << endl;
                         COMMIT_STASK(tid, 0, 1);
