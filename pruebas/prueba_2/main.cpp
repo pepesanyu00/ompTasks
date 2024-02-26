@@ -23,17 +23,18 @@ int main() {
             {
                 int tid = omp_get_thread_num();
                 std::cout << "tid1:" << tid << endl;
-                BEGIN_STASK(tid,0,1);
+                BEGIN_STASK(tid,0,0);
                 variable = 17;
-                COMMIT_STASK(tid,0,1);
+                COMMIT_STASK(tid,0,0);
             }
             #pragma omp task shared(variable)
             {
                 int tid = omp_get_thread_num();
                 std::cout << "tid2:" << tid << endl;
-                BEGIN_STASK(tid,0,2);
+                sleep(1)
+                BEGIN_STASK(tid,0,1);
                 std::cout << "variable en segunda tarea: " << variable << endl;
-                COMMIT_STASK(tid,0,2);
+                COMMIT_STASK(tid,0,1);
             }
         }
     }
