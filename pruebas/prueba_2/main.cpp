@@ -27,9 +27,6 @@ int main() {
                 variable = 17;
                 //COMMIT_STASK(tid,0,0);
             }
-        }
-        #pragma omp single
-        {
             #pragma omp task shared(variable)
             {
                 int tid = omp_get_thread_num();
