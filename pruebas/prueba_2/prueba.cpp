@@ -65,10 +65,9 @@ int main()
             variable = 17;
             //COMMIT_STASK(tid, 0, 0);
         }
-
+        sleep(1);
         #pragma omp task shared(variable)
         {
-            sleep(1);
             int tid = omp_get_thread_num();
             cout << "tid2:" << tid << endl;
             //BEGIN_STASK(tid, 0, 1);
