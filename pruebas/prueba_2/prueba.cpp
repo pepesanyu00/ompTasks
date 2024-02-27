@@ -72,7 +72,6 @@ int main()
             cout << "tid2:" << tid << endl;
             //BEGIN_STASK(tid, 0, 1);
                // BEGIN_ESCAPE;
-                    variable = 12;
                     cout << "variable en segunda tarea: " << variable << endl;
                // END_ESCAPE;
             //COMMIT_STASK(tid, 0, 1);
