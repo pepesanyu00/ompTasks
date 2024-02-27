@@ -5,7 +5,6 @@
 #include <mutex>
 #include "lib/transaction.h"
 
-
 using namespace std;
 
 list<int> priorityList;
@@ -50,9 +49,9 @@ bool priorityFound(int priority)
     return count(priorityList.begin(), priorityList.end(), priority - 1) > 0;
 }
 
+    int variable = 0;
 int main()
 {
-    int variable = 0;
 #pragma omp parallel
     {
     #pragma omp single
@@ -61,20 +60,19 @@ int main()
         {
             int tid = omp_get_thread_num();
             cout << "tid1:" << tid << endl;
-            //BEGIN_STASK(tid, 0, 0);
+            BEGIN_STASK(tid, 0, 0);
             variable = 17;
-            //COMMIT_STASK(tid, 0, 0);
+            COMMIT_STASK(tid, 0, 0);
         }
-        sleep(1);
         #pragma omp task shared(variable)
         {
             int tid = omp_get_thread_num();
             cout << "tid2:" << tid << endl;
-            //BEGIN_STASK(tid, 0, 1);
+            BEGIN_STASK(tid, 0, 1);
                // BEGIN_ESCAPE;
                     cout << "variable en segunda tarea: " << variable << endl;
                // END_ESCAPE;
-            //COMMIT_STASK(tid, 0, 1);
+            COMMIT_STASK(tid, 0, 1);
         }
     }
     }
