@@ -8,6 +8,5 @@ tasks: main.cpp lib/transaction.c lib/stask.cpp
 
 prueba: prueba.cpp lib/transaction.c
 	g++ $(CFLAGS) prueba.cpp lib/transaction.c -o prueba $(LFLAGS)
-
 clean:
 	rm -f tasks prueba
