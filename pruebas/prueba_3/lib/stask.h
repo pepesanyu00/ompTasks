@@ -27,16 +27,19 @@ using namespace std;
 //Lista en la que se almacena el id de las transacciones que han hecho commit
 extern list<int> terminatedList;
 
-#define BEGIN_STASK(thId, xId, id)                                            \
+#define BEGIN_STASK(thId, xId, id, first)                                            \
     INIT_TRANSACTION();                                                             \
-    while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
-    {                                                                           \
-    }                                                                           \
+    if( !first ){                                                                    \
+        while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
+        {                                                                           \
+        }                                                                           \
+    }                                                                               \
     BEGIN_TRANSACTION(thId,xId);
 
-#define COMMIT_STASK(thId, xId, id)                                           \
-    cout << id  << endl;                                                \
-    terminatedList.push_back(id);                                               \
+#define COMMIT_STASK(thId, xId, id, first)                                           \
+    if( first ){                                                                     \
+        terminatedList.push_back(id);                                               \
+    }                                                                               \
     COMMIT_TRANSACTION(thId,xId);                                                                         
 
 
