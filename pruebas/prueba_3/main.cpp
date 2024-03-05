@@ -24,18 +24,24 @@ void fill_matrix(int matrix[SIZE][SIZE]) {
     }
 }
 
+void print_matrix(int matrix[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 int main() {
 
     int a[SIZE][SIZE];
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
 
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            std::cout << c[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
+    print_matrix(a);
+    print_matrix(b);
+    print_matrix(c);
 
 
     fill_matrix(a);
