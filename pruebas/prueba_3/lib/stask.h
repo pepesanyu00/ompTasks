@@ -31,7 +31,7 @@ extern list<int> terminatedList;
     INIT_TRANSACTION();                                                             \
     while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
     {                                                                           \
-        cout << terminatedList  << endl;                                                \
+        cout << terminatedList[0]  << endl;                                                \
     }                                                                           \
     BEGIN_TRANSACTION(thId,xId);
 
