@@ -31,9 +31,10 @@ extern mutex listMutex;
 #define BEGIN_STASK(thId, xId, id, first)                                            \
     INIT_TRANSACTION();                                                             \
     if( !first ){                                                                    \
-        lock_guard<mutex> guard(listMutex);                                   \
+        int ix = 0;                                                                 \
         while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
         {                                                                           \
+            ix++;                                                                   \
         }                                                                           \
     }                                                                               \
     BEGIN_TRANSACTION(thId,xId);
