@@ -62,7 +62,9 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id);
+                        BEGIN_ESCAPE;
                         std::cout << c[i][j] << " " << std::endl;
+                        END_ESCAPE;
                         COMMIT_STASK(tid,0,id);
                         id++;
                     }
