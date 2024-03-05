@@ -31,11 +31,11 @@ extern list<int> terminatedList;
     INIT_TRANSACTION();                                                             \
     while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
     {                                                                           \
-        cout << terminatedList.back()  << endl;                                                \
     }                                                                           \
     BEGIN_TRANSACTION(thId,xId);
 
 #define COMMIT_STASK(thId, xId, id)                                           \
+    cout << id  << endl;                                                \
     terminatedList.push_back(id);                                               \
     COMMIT_TRANSACTION(thId,xId);                                                                         
 
