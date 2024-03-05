@@ -29,8 +29,9 @@ extern list<int> terminatedList;
 
 #define BEGIN_STASK(thId, xId, id)                                            \
     INIT_TRANSACTION();                                                             \
-    while((count(terminatedList.begin(),terminatedList.end(),id) == 0)){    \
-        cout << "hola"  << endl;                                                \
+    while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
+    {                                                                           \
+        cout << terminatedList  << endl;                                                \
     }                                                                           \
     BEGIN_TRANSACTION(thId,xId);
 
