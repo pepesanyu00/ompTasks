@@ -26,12 +26,11 @@ using namespace std;
 
 //Lista en la que se almacena el id de las transacciones que han hecho commit
 extern list<int> terminatedList;
-extern mutex listMutex;
 
 #define BEGIN_STASK(thId, xId, id)                                            \
     INIT_TRANSACTION();                                                             \
-    lock_guard<mutex> guard(listMutex);                                        \
     while((count(terminatedList.begin(),terminatedList.end(),id) == 0)){    \
+        cout << "hola"  << endl;                                                \
     }                                                                           \
     BEGIN_TRANSACTION(thId,xId);
 
