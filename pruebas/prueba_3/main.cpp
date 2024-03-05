@@ -44,12 +44,12 @@ int main() {
                 std::cout << "tid1:" << tid << std::endl;
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
-                        BEGIN_STASK(tid,0,id);
                         for (int k = 0; k < SIZE; ++k) {
+                            BEGIN_STASK(tid,0,id);
                             c[i][j] += a[i][k] * b[k][j];
+                            COMMIT_STASK(tid,0,id);
+                            id++;
                         }
-                        COMMIT_STASK(tid,0,id);
-                        id++;
                     }
                 }
             }
@@ -62,9 +62,7 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id);
-                        BEGIN_ESCAPE;
                         std::cout << c[i][j] << " " << std::endl;
-                        END_ESCAPE;
                         COMMIT_STASK(tid,0,id);
                         id++;
                     }
