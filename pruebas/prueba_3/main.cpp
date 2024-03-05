@@ -39,13 +39,13 @@ int main() {
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
 
-    print_matrix(a);
-    print_matrix(b);
-    print_matrix(c);
-
 
     fill_matrix(a);
     fill_matrix(b);
+
+    print_matrix(a);
+    print_matrix(b);
+    print_matrix(c);
 
     #pragma omp parallel
     {
