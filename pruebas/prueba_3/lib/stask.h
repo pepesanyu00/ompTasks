@@ -32,7 +32,6 @@ extern list<int> terminatedList;
     if( !first ){                                                                    \
         while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
         {                                                                           \
-            cout << terminatedList.size() << endl;                                  \
         }                                                                           \
     }                                                                               \
     BEGIN_TRANSACTION(thId,xId);
