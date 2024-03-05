@@ -16,6 +16,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <stdlib.h>
 #include <list>
 #include <algorithm>
+#include <mutex>
 #include "transaction.h"
 using namespace std;
 
@@ -25,9 +26,11 @@ using namespace std;
 
 //Lista en la que se almacena el id de las transacciones que han hecho commit
 extern list<int> terminatedList;
+extern mutex listMutex;
 
 #define BEGIN_STASK(thId, xId, id)                                            \
     INIT_TRANSACTION();                                                             \
+    lock_guard<mutex> guard(listMutex);                                        \
     while((count(terminatedList.begin(),terminatedList.end(),id) == 0)){    \
     }                                                                           \
     BEGIN_TRANSACTION(thId,xId);
