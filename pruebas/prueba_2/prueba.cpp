@@ -49,9 +49,10 @@ bool priorityFound(int priority)
     return count(priorityList.begin(), priorityList.end(), priority - 1) > 0;
 }
 
-    int variable = 0;
+int variable = 0;
 int main()
 {
+int variable = 0;
 #pragma omp parallel
     {
     #pragma omp single

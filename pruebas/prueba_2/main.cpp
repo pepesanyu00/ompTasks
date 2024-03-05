@@ -13,8 +13,8 @@ esperar a que la primera haga commit para ejecutarse.
 
 using namespace std;
 
+int variable = 0;
 int main() {
-    int variable = 0;
     #pragma omp parallel 
     {
         #pragma omp single
