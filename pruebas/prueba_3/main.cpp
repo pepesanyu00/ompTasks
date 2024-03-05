@@ -30,6 +30,14 @@ int main() {
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
 
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            std::cout << c[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+
     fill_matrix(a);
     fill_matrix(b);
 
@@ -62,7 +70,7 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id,0);
-                        std::cout << c[i][j] << " " << std::endl;
+                        std::cout << c[i][j] << " ";
                         COMMIT_STASK(tid,0,id,0);
                         id++;
                     }
