@@ -33,7 +33,7 @@ extern mutex listMutex;
     if( !first ){                                                                    \
         while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
         {                                                                           \
-            cout << "Esperando a que la transacción " << id << " haga commit" << endl; \
+            std::this_thread::yield();                                               \
         }                                                                           \
     }                                                                               \
     BEGIN_TRANSACTION(thId,xId);
