@@ -13,7 +13,7 @@ que tenga cada transacción análoga en la otra tarea, de tal forma que se resue
 #include <vector>
 #include "lib/stask.h"
 
-#define SIZE 1000
+#define SIZE 3
 
 
 void fill_matrix(std::vector<std::vector<int>>& matrix) {
@@ -46,9 +46,9 @@ int main() {
     fill_matrix(a);
     fill_matrix(b);
 
-    //print_matrix(a);
-    //print_matrix(b);
-    //print_matrix(c);
+    print_matrix(a);
+    print_matrix(b);
+    print_matrix(c);
     std::clock_t start = std::clock();
     #pragma omp parallel
     {
