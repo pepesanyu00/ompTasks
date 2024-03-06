@@ -12,6 +12,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <sys/syscall.h>
 #include <stdio.h>
 #include <string.h>
+#include <thread>
 #include <unistd.h>
 #include <stdlib.h>
 #include <list>
