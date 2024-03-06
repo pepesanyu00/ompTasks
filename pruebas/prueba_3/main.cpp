@@ -13,7 +13,7 @@ que tenga cada transacción análoga en la otra tarea, de tal forma que se resue
 
 #include "lib/stask.h"
 
-#define SIZE 100
+#define SIZE 1000
 
 
 void fill_matrix(int matrix[SIZE][SIZE]) {
