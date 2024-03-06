@@ -16,7 +16,7 @@ que tenga cada transacción análoga en la otra tarea, de tal forma que se resue
 #define SIZE 1000
 
 
-void fill_matrix(std::vector<std::vector<int>> matrix) {
+void fill_matrix(std::vector<std::vector<int>>& matrix) {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             matrix[i][j] = rand() % 100;  // Genera un número aleatorio entre 0 y 99
@@ -24,7 +24,7 @@ void fill_matrix(std::vector<std::vector<int>> matrix) {
     }
 }
 
-void print_matrix(std::vector<std::vector<int>> matrix) {
+void print_matrix(std::vector<std::vector<int>>& matrix) {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             std::cout << matrix[i][j] << " ";
