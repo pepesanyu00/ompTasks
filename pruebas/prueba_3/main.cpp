@@ -65,6 +65,7 @@ int main() {
                             BEGIN_STASK(tid,0,id,1);
                             c[i][j] += a[i][k] * b[k][j];
                             COMMIT_STASK(tid,0,id,1);
+                            cout << "c[" << i << "][" << j << "] = " << c[i][j] << endl;
                             id++;
                         }
                     }
