@@ -80,7 +80,7 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id,0);
-                        std::cout << c[i][j] << " ";
+                        std::cout << "c[" << i << "][" << j << "] en segunda tarea: "<< c[i][j] << " ";
                         COMMIT_STASK(tid,0,id,0);
                         id++;
                     }
