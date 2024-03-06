@@ -64,7 +64,7 @@ int main() {
                         BEGIN_STASK(tid,0,id,1);
                         for (int k = 0; k < SIZE; ++k) {
                             c[i][j] += a[i][k] * b[k][j];
-                            cout << "c[" << i << "][" << j << "] = " << c[i][j] << endl;
+                            //cout << "c[" << i << "][" << j << "] = " << c[i][j] << endl;
                         }
                         COMMIT_STASK(tid,0,id,1);
                         id++;
@@ -80,7 +80,7 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id,0);
-                        std::cout << "C[" << i << "][" << j << "] en segunda tarea: "<< c[i][j] << " ";
+                        //std::cout << "C[" << i << "][" << j << "] en segunda tarea: "<< c[i][j] << " ";
                         COMMIT_STASK(tid,0,id,0);
                         id++;
                     }
