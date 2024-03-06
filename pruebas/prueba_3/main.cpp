@@ -33,14 +33,13 @@ void print_matrix(int matrix[SIZE][SIZE]) {
     }
 }
 
-    int a[SIZE][SIZE];
-    int b[SIZE][SIZE];
-    int c[SIZE][SIZE] = {};
 
 
 int main() {
 
-
+    int a[SIZE][SIZE];
+    int b[SIZE][SIZE];
+    int c[SIZE][SIZE] = {};
 
 
     fill_matrix(a);
