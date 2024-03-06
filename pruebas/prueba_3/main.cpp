@@ -13,7 +13,7 @@ que tenga cada transacción análoga en la otra tarea, de tal forma que se resue
 
 #include "lib/stask.h"
 
-#define SIZE 3
+#define SIZE 100
 
 
 void fill_matrix(int matrix[SIZE][SIZE]) {
@@ -79,7 +79,7 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id,0);
-                        std::cout << c[i][j] << " ";
+                            c[i][j]++;
                         COMMIT_STASK(tid,0,id,0);
                         id++;
                     }
@@ -89,5 +89,6 @@ int main() {
         }
     }
 
+    print_matrix(c);
     return 0;
 }
