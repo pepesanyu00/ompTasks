@@ -10,7 +10,7 @@ que tenga cada transacción análoga en la otra tarea, de tal forma que se resue
 #include <iostream>
 #include <omp.h>
 #include <ctime>
-
+#include <vector>
 #include "lib/stask.h"
 
 #define SIZE 1000
