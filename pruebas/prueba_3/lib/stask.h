@@ -31,10 +31,9 @@ extern mutex listMutex;
 #define BEGIN_STASK(thId, xId, id, first)                                            \
     INIT_TRANSACTION();                                                             \
     if( !first ){                                                                    \
-        int ix = 0;                                                                 \
         while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
         {                                                                           \
-            ix++;                                                                   \
+            cout << "Esperando a que la transacción " << id << " haga commit" << endl; \
         }                                                                           \
     }                                                                               \
     BEGIN_TRANSACTION(thId,xId);
