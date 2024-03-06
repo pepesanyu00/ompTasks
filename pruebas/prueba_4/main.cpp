@@ -40,6 +40,7 @@ int main() {
     int a[SIZE][SIZE];
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
+    int d[SIZE][SIZE] = {};
 
 
     fill_matrix(a);
@@ -79,7 +80,7 @@ int main() {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         BEGIN_STASK(tid,0,id,0);
-                            c[i][j]++;
+                            d[i][j] = c[i][j]+1;
                         COMMIT_STASK(tid,0,id,0);
                         id++;
                     }
