@@ -61,13 +61,13 @@ int main() {
                 std::cout << "tid1:" << tid << std::endl;
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
+                        BEGIN_STASK(tid,0,id,1);
                         for (int k = 0; k < SIZE; ++k) {
-                            BEGIN_STASK(tid,0,id,1);
                             c[i][j] += a[i][k] * b[k][j];
-                            COMMIT_STASK(tid,0,id,1);
                             cout << "c[" << i << "][" << j << "] = " << c[i][j] << endl;
-                            id++;
                         }
+                        COMMIT_STASK(tid,0,id,1);
+                        id++;
                     }
                 }
             }
