@@ -41,7 +41,7 @@ extern bool doneFlag;
     }                                                                            \
     if(out){                                                                   \
         while(!doneFlag){                                                    \
-            std::this_thread::yield;                                    \
+            std::this_thread::yield();                                    \
             BEGIN_ESCAPE;                                                \
             cout << " estoy en out, thread: " << thId << "doneFlag: " << doneFlag << endl;                                              \
             END_ESCAPE;                                         \
