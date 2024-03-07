@@ -16,6 +16,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <stdlib.h>
 #include <list>
 #include <algorithm>
+#include <thread>
 #include "transaction.h"
 using namespace std;
 
