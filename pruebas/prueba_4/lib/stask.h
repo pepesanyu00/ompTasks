@@ -12,12 +12,10 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <sys/syscall.h>
 #include <stdio.h>
 #include <string.h>
-#include <thread>
 #include <unistd.h>
 #include <stdlib.h>
 #include <list>
 #include <algorithm>
-#include <mutex>
 #include "transaction.h"
 using namespace std;
 
@@ -25,26 +23,21 @@ using namespace std;
 #define BEGIN_ESCAPE __builtin_tsuspend()
 #define END_ESCAPE __builtin_tresume()
 
-//Lista en la que se almacena el id de las transacciones que han hecho commit
-extern list<int> terminatedList;
-extern mutex listMutex;
+//Flag que indica a una transacción que contiene algún out si puede terminar o no
+extern bool doneFlag;
 
-#define BEGIN_STASK(thId, xId, id, first)                                            \
-    INIT_TRANSACTION();                                                             \
-    if( !first ){                                                                    \
-        while((count(terminatedList.begin(),terminatedList.end(),id) == 0))     \
-        {                                                                           \
-            std::this_thread::yield();                                               \
-        }                                                                           \
-    }                                                                               \
-    BEGIN_TRANSACTION(thId,xId);
-
-#define COMMIT_STASK(thId, xId, id, first)                                           \
-    if( first ){                                                                     \
-        terminatedList.push_back(id);                                               \
-    }                                                                               \
-    COMMIT_TRANSACTION(thId,xId);                                                                         
+#define BEGIN_STASK(thId, xId, in, out)                                        \
+    INIT_TRANSACTION();                                                         \
+    BEGIN_TRANSACTION(thId, xId);                                               \
 
 
+#define COMMIT_STASK(thId, xId, in, out)                                           \
+    if(in){                                                                      \
+        doneFlag = true;                                                      \
+    }                                                                            \
+    if(out){                                                                   \
+        while(!doneFlag){std::this_thread::yield;}                              \
+    }                                                                            \
+    COMMIT_TRANSACTION(thId, xId);                                              
 
 #endif

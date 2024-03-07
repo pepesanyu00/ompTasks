@@ -1,96 +1,41 @@
-/* Esta es una prueba que extiende a la prueba 2, seguimos con la transacciones con prioridad y variables globales,
-esta vez se va a probar en un programa que utilice bucles dentro de una tarea, rellenando una matriz. Así podremos medir
-los tiempos de la implementación que utiliza depend y los de la que utiliza stask.
-
-La idea de la prueba es hacer multiplicación de matrices de tal forma que en una tarea se rellena la matriz y en otra se
-imprime el resultado. Se va a cambiar la librería de stasks de tal forma que cada transacción tiene un id que será el mismo
-que tenga cada transacción análoga en la otra tarea, de tal forma que se resuelvan las dependencias por pares de transacciones.*/
+/* Esta prueba cambia un poco el rumbo de lo que se estaba haciendo. En las anteriores implementaciones, cuando una transacción hacía commit era cuando podía
+comenzar a ejecutarse otra transacción. En esta prueba, se van a ejecutar dos transacciones en paralelo, con prioridades, de tal forma que si la segunda transacción
+termina antes que la primera, va a esperar a que la primera termine, cuando la primera termine va a hacer que la primera aborte (requester wins), haciendo que se ejecute
+de nuevo y se pueda ver el valor de la variable compartida.
+*/
 
 
 #include <iostream>
 #include <omp.h>
 #include <ctime>
-#include <vector>
+
 #include "lib/stask.h"
 
-#define SIZE 1000
+using namespace std;
 
-
-void fill_matrix(std::vector<std::vector<int>>& matrix) {
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            matrix[i][j] = rand() % 100;  // Genera un número aleatorio entre 0 y 99
-        }
-    }
-}
-
-void print_matrix(std::vector<std::vector<int>>& matrix) {
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            std::cout << matrix[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-
-
+int variable = 0;
+int variable2 = 0;
 int main() {
-
-    std::vector<std::vector<int>> a(SIZE, std::vector<int>(SIZE));
-    std::vector<std::vector<int>> b(SIZE, std::vector<int>(SIZE));
-    std::vector<std::vector<int>> c(SIZE, std::vector<int>(SIZE));
-    std::vector<std::vector<int>> d(SIZE, std::vector<int>(SIZE));
-
-
-    fill_matrix(a);
-    fill_matrix(b);
-
-    //print_matrix(a);
-    //print_matrix(b);
-    //print_matrix(c);
-    std::clock_t start = std::clock();
-    #pragma omp parallel
+    #pragma omp parallel 
     {
         #pragma omp single
         {
-            #pragma omp task shared(a, b, c)
-            {
-                int id = 0;
-                int tid = omp_get_thread_num();
-                std::cout << "tid1:" << tid << std::endl;
-                for (int i = 0; i < SIZE; ++i) {
-                    for (int j = 0; j < SIZE; ++j) {
-                        BEGIN_STASK(tid,0,id,1);
-                        for (int k = 0; k < SIZE; ++k) {
-                            c[i][j] += a[i][k] * b[k][j];
-                            //cout << "c[" << i << "][" << j << "] = " << c[i][j] << endl;
-                        }
-                        COMMIT_STASK(tid,0,id,1);
-                        id++;
-                    }
-                }
-            }
+            int tid = omp_get_thread_num();
+            BEGIN_STASK(tid,0,variable,0);
+                variable = 17;
+            COMMIT_STASK(tid,0,variable,0);
+        }
 
-            #pragma omp task shared(c)
-            {
-                int tid = omp_get_thread_num();
-                int id = 0;
-                std::cout << "tid2:" << tid << std::endl;
-                for (int i = 0; i < SIZE; ++i) {
-                    for (int j = 0; j < SIZE; ++j) {
-                        BEGIN_STASK(tid,0,id,0);
-                            d[i][j] = c[i][j]+1;
-                        COMMIT_STASK(tid,0,id,0);
-                        id++;
-                    }
-                    //std::cout << std::endl;
-                }
-            }
+        #pragma omp single
+        {
+            int tid = omp_get_thread_num();
+            BEGIN_STASK(tid,0,0,variable);
+                variable2 = variable +1;
+            COMMIT_STASK(tid,0,0,variable);
         }
     }
-    double duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-    std::cout << "La función tardó: " << duration << " segundos.\n";
 
+    std::cout << "variable1: " << variable << endl;
+    std::cout << "variable2: " << variable2 << endl;
     return 0;
 }
