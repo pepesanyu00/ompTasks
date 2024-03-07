@@ -34,10 +34,18 @@ extern bool doneFlag;
 
 #define COMMIT_STASK(thId, xId, in, out)                                           \
     if(in){                                                                      \
+        BEGIN_ESCAPE;                                                           \
+           cout << " estoy en in" << endl;                                                  \
+        END_ESCAPE;                                                             \
         doneFlag = true;                                                      \
     }                                                                            \
     if(out){                                                                   \
-        while(!doneFlag){std::this_thread::yield;}                              \
+        while(!doneFlag){                                                    \
+            std::this_thread::yield;                                    \
+            BEGIN_ESCAPE;                                                \
+            cout << " estoy en out, thread: " << thId << "doneFlag: " << doneFlag << endl;                                              \
+            END_ESCAPE;                                         \
+        }                              \
     }                                                                            \
     COMMIT_TRANSACTION(thId, xId);                                              
 
