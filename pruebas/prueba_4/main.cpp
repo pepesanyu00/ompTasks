@@ -13,7 +13,7 @@ de nuevo y se pueda ver el valor de la variable compartida.
 
 using namespace std;
 
-int variable = 0;
+int variable = 1;
 int variable2 = 0;
 int main() {
     #pragma omp parallel 
