@@ -24,10 +24,6 @@ int main() {
             //BEGIN_STASK(tid,0,variable,0);
                 variable = 17;
             //COMMIT_STASK(tid,0,variable,0);
-        }
-
-        #pragma omp single
-        {
             int tid = omp_get_thread_num();
             //BEGIN_STASK(tid,0,0,variable);
                 variable2 = variable +1;
