@@ -35,7 +35,7 @@ extern bool doneFlag;
 #define COMMIT_STASK(thId, xId, in, out)                                           \
     if(in){                                                                      \
         BEGIN_ESCAPE;                                                           \
-           cout << " estoy en in" << endl;                                                  \
+           cout << " estoy en in. Thread: " << thId << endl;                                                  \
         END_ESCAPE;                                                             \
         doneFlag = true;                                                      \
     }                                                                            \
