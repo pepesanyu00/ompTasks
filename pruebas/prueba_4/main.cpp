@@ -20,18 +20,27 @@ int main() {
     {
         #pragma omp single
         {
-            int tid = omp_get_thread_num();
-            //BEGIN_STASK(tid,0,variable,0);
+            #pragma omp task shared(variable)
+            {
+                int tid = omp_get_thread_num();
+                std::cout << "tid1:" << tid << endl;
+                BEGIN_STASK(tid,0,variable,0);
                 variable = 17;
-            //COMMIT_STASK(tid,0,variable,0);
-            //int tid = omp_get_thread_num();
-            //BEGIN_STASK(tid,0,0,variable);
-                variable2 = variable +1;
-            //COMMIT_STASK(tid,0,0,variable);
+                COMMIT_STASK(tid,0,variable,0);
+            }
+            #pragma omp task shared(variable)
+            {
+                int tid = omp_get_thread_num();
+                std::cout << "tid2:" << tid << endl;
+                BEGIN_STASK(tid,0,0,variable);
+                variable2 = variable+1;
+                COMMIT_STASK(tid,0,0,variable);
+            }
         }
     }
 
-    std::cout << "variable1: " << variable << endl;
+    std::cout << "variable: " << variable << endl;
     std::cout << "variable2: " << variable2 << endl;
+
     return 0;
 }
