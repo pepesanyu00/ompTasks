@@ -15,7 +15,6 @@ volatile unsigned int g_ticketlock_turn = 1;
 
 volatile uint32_t g_lock_var = 0;
 fback_lock_t g_fallback_lock = {.ticket = 0, .turn = 1};
-g_spec_vars_t g_specvars = {.tx_order = 1};
 
 //RIC Archivo de estadísticas
 char fname[256];
