@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) {
       cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
       return 0;
     }
-    cout << "He pasado" << endl;
     tstart = chrono::steady_clock::now();
     #pragma omp parallel 
     {

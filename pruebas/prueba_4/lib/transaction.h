@@ -40,6 +40,7 @@
   do                                                                                           \
   {                                                                                            \
     if (__p_retries)                                                                           \
+      printf("hasta aqui llego");                                                              \
       profileAbortStatus(__builtin_get_texasru(), thId, xId);                                  \
     __p_retries++;                                                                             \
     if (__p_retries > MAX_RETRIES)                                                             \
@@ -94,20 +95,6 @@ typedef struct tm_tx {
   uint8_t pad2[CACHE_BLOCK_SIZE-sizeof(uint32_t)*3-sizeof(uint8_t)];
 } __attribute__ ((aligned (CACHE_BLOCK_SIZE))) tm_tx_t;
 
-/* Transactional barrier descriptor */
-typedef struct barrier {
-  int nb_threads; /* Number of threads to wait in the barrier */
-  volatile uint32_t remain; /* Remaining threads until unblock */
-} barrier_t;
-
-//RIC creo una estructura para colocar el global tx order y la barrera
-typedef struct global_spec_vars {
-  volatile uint32_t tx_order; //Tiene que ser inicializado a 1
-  uint8_t pad1[CACHE_BLOCK_SIZE-sizeof(uint32_t)];
-  barrier_t barrier;
-  uint8_t pad2[CACHE_BLOCK_SIZE-sizeof(barrier_t)];
-} __attribute__ ((aligned (CACHE_BLOCK_SIZE))) g_spec_vars_t;
-
 typedef struct fback_lock {
   //RIC Para implementar el spinlock del fallback de Haswell
   volatile uint32_t ticket;
@@ -126,9 +113,6 @@ void profileCommit(long thread, long xid, long retries);
 void profileFallback(long thread, long xid, long retries);
 int dumpStats(float time, int ver);
 
-//RIC
-void Barrier_init();
-void Barrier_non_breaking(int* local_sense, int id, int num_thr);
 
 #endif
 

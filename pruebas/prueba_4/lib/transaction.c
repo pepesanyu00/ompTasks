@@ -44,35 +44,6 @@ struct Stats {
   char pad2[CACHE_BLOCK_SIZE];
 } **stats;
 
-void Barrier_init() {
-  sense = 0;
-  count = 0;
-  pthread_mutex_init(&bar_lock, NULL);
-}
-
-void Barrier_non_breaking(int* local_sense, int id, int num_thr) {
-  volatile int ret;
-
-  if ((*local_sense) == 0)
-    (*local_sense) = 1;
-  else
-    (*local_sense) = 0;
-
-  pthread_mutex_lock(&bar_lock);
-  count++;
-  ret = (count == num_thr);
-  pthread_mutex_unlock(&bar_lock);
-
-  if (ret) {
-    count = 0;
-    sense = (*local_sense);
-  } else {
-    while (sense != (*local_sense)) {
-      //usleep(1);     // For non-simulator runs
-    }
-  }
-}
-
 int statsFileInit(long thCount) {
   int i,j;
   char ext[25];
