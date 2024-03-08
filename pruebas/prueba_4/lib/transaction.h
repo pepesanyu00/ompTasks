@@ -58,13 +58,13 @@
     if (g_fallback_lock.ticket >= g_fallback_lock.turn)               \
       __builtin_tabort(LOCK_TAKEN); /*Early subscription*/            \
     __builtin_tend(0);                                                \
-  /*  profileCommit(thId, xId, __p_retries - 1);*/                        \
+  /*  profileCommit(thId, xId, __p_retries - 1);*/                    \
   }                                                                   \
   else                                                                \
   {                                                                   \
     /* __sync_add_and_fetch(&(g_fallback_lock.turn), 1); */           \
     __atomic_add_fetch(&(g_fallback_lock.turn), 1, __ATOMIC_SEQ_CST); \
-    /*profileFallback(thId, xId, __p_retries - 1);*/                      \
+    /*profileFallback(thId, xId, __p_retries - 1);*/                  \
   }  
 
 /* Transaction descriptor. It is aligned (including stats) to CACHELINE_SIZE

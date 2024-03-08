@@ -16,12 +16,12 @@ using namespace std;
 int variable = 1;
 int variable2 = 0;
 int main(int argc, char *argv[]) {
-    //chrono::steady_clock::time_point tstart, tend;
-    //chrono::duration<double> telapsed;
-    /*if(!statsFileInit(2)){
+    chrono::steady_clock::time_point tstart, tend;
+    chrono::duration<double> telapsed;
+    if(!statsFileInit(2)){
       cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
       return 0;
-    }*/
+    }
     //tstart = chrono::steady_clock::now();
     #pragma omp parallel 
     {
