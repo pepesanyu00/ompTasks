@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
       return 0;
     }
     tstart = chrono::steady_clock::now();
+    cout << "he pasado" << endl;
     #pragma omp parallel 
     {
         #pragma omp single
