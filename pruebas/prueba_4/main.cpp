@@ -15,7 +15,14 @@ using namespace std;
 
 int variable = 1;
 int variable2 = 0;
-int main() {
+int main(int argc, char *argv[]) {
+    chrono::steady_clock::time_point tstart, tend;
+    chrono::duration<double> telapsed;
+
+    if(!statsFileInit(2)){
+      cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
+      return 0;
+    }
     #pragma omp parallel 
     {
         #pragma omp single
@@ -37,6 +44,10 @@ int main() {
                 COMMIT_STASK(tid,0,0,variable);
             }
         }
+    }
+    
+    if(!dumpStats(telapsed.count(),1)){
+      cout << "Error volcando las estadísticas." << endl;
     }
 
     std::cout << "variable: " << variable << endl;

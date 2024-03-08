@@ -29,23 +29,17 @@ extern bool doneFlag;
 
 #define BEGIN_STASK(thId, xId, in, out)                                        \
     INIT_TRANSACTION();                                                         \
-    BEGIN_TRANSACTION(thId, xId);                                               \
+    BEGIN_TRANSACTION(thId, xId);                                               
 
 
 #define COMMIT_STASK(thId, xId, in, out)                                           \
     if(in){                                                                      \
-        BEGIN_ESCAPE;                                                           \
-           cout << " estoy en in. Thread: " << thId << endl;                                                  \
-        END_ESCAPE;                                                             \
         doneFlag = true;                                                      \
     }                                                                            \
     if(out){                                                                   \
         while(!doneFlag){                                                    \
             std::this_thread::yield();                                    \
-            BEGIN_ESCAPE;                                                \
-            cout << " estoy en out, thread: " << thId << "doneFlag: " << doneFlag << endl;                                              \
-            END_ESCAPE;                                         \
-        }                              \
+        }                                                                       \
     }                                                                            \
     COMMIT_TRANSACTION(thId, xId);                                              
 
