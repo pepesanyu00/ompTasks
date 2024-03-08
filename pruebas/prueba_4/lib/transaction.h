@@ -31,6 +31,9 @@
 #define BEGIN_ESCAPE __builtin_tsuspend()
 #define END_ESCAPE __builtin_tresume()
 
+#define INIT_TRANSACTION() \
+  uint32_t __p_retries
+
 //Con ticket lock
 #define BEGIN_TRANSACTION(thId, xId)                                                           \
   __p_retries = 0;                                                                             \

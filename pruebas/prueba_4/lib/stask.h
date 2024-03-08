@@ -28,6 +28,7 @@ using namespace std;
 extern bool doneFlag;
 
 #define BEGIN_STASK(thId, xId, in, out)                                        \
+    INIT_TRANSACTION();                                                         \
     BEGIN_TRANSACTION(thId, xId);                                               
 
 
