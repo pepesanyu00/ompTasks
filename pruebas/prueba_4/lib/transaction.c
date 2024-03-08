@@ -89,8 +89,8 @@ int statsFileInit(long thCount) {
       if(!strstr(argv[i],"-")) strcat(fname, "-"); //Si no hay guiones en las opciones pongo un guión
       strcat(fname, argv[i]);
     }
-  }
-  strcat(fname, ext);*/
+  }*/
+  strcat(fname, ext);
   printf("Nombre del fichero: %s",fname);
   //Inicio los arrays de estadísticas
   threadCount = thCount;
