@@ -38,11 +38,14 @@
   volatile long __p_retries = 0;                          \
   long __p_thId = thId, __p_xId = xId;                    \
   texasru_t __p_abortCause;                               \
+  printf("hola\n");                                       \
 __p_failure##xId:                                              \
   __p_abortCause = __builtin_get_texasru ();              \
   if(__p_retries) profileAbortStatus(__p_abortCause, __p_thId, __p_xId);     \
+    printf("hola buenas\n");                                       \
   __p_retries++;                                          \
   if (__p_retries > MAX_RETRIES) {                        \
+      printf("hola buenas tardes\n");                                       \
     uint32_t myticket = __sync_add_and_fetch(&(g_fallback_lock.ticket), 1);   \
     while(myticket != g_fallback_lock.turn) ;             \
   } else {                                                \
