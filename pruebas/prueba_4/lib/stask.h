@@ -40,6 +40,6 @@ extern bool doneFlag;
             std::this_thread::yield();                                    \
         }                                                                       \
     }                                                                            \
-    COMMIT_TRANSACTION();                                              
+    COMMIT_TRANSACTION(thId, xId);                                              
 
 #endif
