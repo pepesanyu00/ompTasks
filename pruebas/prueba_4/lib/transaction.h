@@ -66,7 +66,7 @@
   {                                                                   \
     /* __sync_add_and_fetch(&(g_fallback_lock.turn), 1); */           \
     __atomic_add_fetch(&(g_fallback_lock.turn), 1, __ATOMIC_SEQ_CST); \
-    /*profileFallback(thId, xId, __p_retries - 1);*/                  \
+    profileFallback(thId, xId, __p_retries - 1);                  \
   }  
 
 /* Transaction descriptor. It is aligned (including stats) to CACHELINE_SIZE
