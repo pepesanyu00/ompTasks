@@ -39,9 +39,6 @@
   __p_retries = 0;                                                                             \
   do                                                                                           \
   {                                                                                            \
-    //if (__p_retries)                                                                           
-    //  printf("hasta aqui llego");                                                              
-    //  profileAbortStatus(__builtin_get_texasru(), thId, xId);                                  
     __p_retries++;                                                                             \
     if (__p_retries > MAX_RETRIES)                                                             \
     {                                                                                          \
