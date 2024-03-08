@@ -39,9 +39,9 @@ int main(int argc, char *argv[]) {
             {
                 int tid = omp_get_thread_num();
                 //std::cout << "tid2:" << tid << endl;
-                BEGIN_STASK(tid,0,0,variable);
+                BEGIN_STASK(tid,1,0,variable);
                 variable2 = variable+1;
-                COMMIT_STASK(tid,0,0,variable);
+                COMMIT_STASK(tid,1,0,variable);
             }
         }
     }
