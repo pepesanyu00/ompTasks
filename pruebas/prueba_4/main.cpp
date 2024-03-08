@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
     /*if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
     }*/
+    cout << variable << "," << variable2 << endl;
     
     return 0;
 }
