@@ -93,7 +93,7 @@ int statsFileInit(long thCount) {
     }
   }*/
   strncpy(fname, ext, sizeof(fname) - 1);
-  printf("Nombre del fichero: %s",fname);
+  printf("Nombre del fichero: %s\n",fname);
   //Inicio los arrays de estadísticas
   threadCount = thCount;
   
