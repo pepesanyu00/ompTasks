@@ -18,10 +18,10 @@ int variable2 = 0;
 int main(int argc, char *argv[]) {
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
-    if(!statsFileInit(2)){
+    /*if(!statsFileInit(2)){
       cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
       return 0;
-    }
+    }*/
     tstart = chrono::steady_clock::now();
     #pragma omp parallel 
     {
@@ -49,9 +49,9 @@ int main(int argc, char *argv[]) {
     cout << "buenas" << endl;
     telapsed = tend - tstart;
     cout << "buenas tardes" << endl;
-    if(!dumpStats(telapsed.count(),1)){
+    /*if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
-    }
+    }*/
     cout << "buenas tardes noches" << endl;
 
     std::cout << "variable: " << variable << endl;
