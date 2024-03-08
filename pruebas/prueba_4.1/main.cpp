@@ -46,10 +46,15 @@ int main(int argc, char *argv[]) {
         }
     }
     //tend = chrono::steady_clock::now();    
+    cout << "buenas" << endl;
     //telapsed = tend - tstart;
+    cout << "buenas tardes" << endl;
     /*if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
     }*/
-    
+    cout << "buenas tardes noches" << endl;
+
+    std::cout << "variable: " << variable << endl;
+    std::cout << "variable2: " << variable2 << endl;
     return 0;
 }
