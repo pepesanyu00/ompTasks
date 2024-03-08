@@ -21,7 +21,7 @@
 #define MAX_RETRIES 5
 
 //RIC defino el número máximo de identificadores de transacciones que tendremos
-//en los benchmarcs y el identificador de la transacción abierta por la barrera
+//en los benchmarks y el identificador de la transacción abierta por la barrera
 //especulativa. Se utiliza en las estadísticas
 #define MAX_XACT_IDS 4
 #define SPEC_XACT_ID MAX_XACT_IDS-1
@@ -58,14 +58,13 @@
     if (g_fallback_lock.ticket >= g_fallback_lock.turn)               \
       __builtin_tabort(LOCK_TAKEN); /*Early subscription*/            \
     __builtin_tend(0);                                                \
-    profileCommit(thId, xId, __p_retries - 1);                        \
   }                                                                   \
   else                                                                \
   {                                                                   \
     /* __sync_add_and_fetch(&(g_fallback_lock.turn), 1); */           \
     __atomic_add_fetch(&(g_fallback_lock.turn), 1, __ATOMIC_SEQ_CST); \
-    profileFallback(thId, xId, __p_retries - 1);                      \
-  }  
+  }                                               
+
 
 /* Transaction descriptor. It is aligned (including stats) to CACHELINE_SIZE
  * to avoid aliases with other threads metadata */
@@ -92,6 +91,8 @@ typedef struct tm_tx {
   uint8_t pad2[CACHE_BLOCK_SIZE-sizeof(uint32_t)*3-sizeof(uint8_t)];
 } __attribute__ ((aligned (CACHE_BLOCK_SIZE))) tm_tx_t;
 
+
+
 typedef struct fback_lock {
   //RIC Para implementar el spinlock del fallback de Haswell
   volatile uint32_t ticket;
@@ -103,12 +104,6 @@ extern fback_lock_t g_fallback_lock;
 extern pthread_mutex_t global_lock;
 extern volatile uint32_t g_lock_var;
 
-//Funciones para el fichero de estadísticas
-int statsFileInit(long thCount);
-unsigned long profileAbortStatus(texasru_t cause, long thread, long xid);
-void profileCommit(long thread, long xid, long retries);
-void profileFallback(long thread, long xid, long retries);
-int dumpStats(float time, int ver);
 
 
 #endif
