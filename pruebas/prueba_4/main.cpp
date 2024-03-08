@@ -52,6 +52,5 @@ int main(int argc, char *argv[]) {
 
     std::cout << "variable: " << variable << endl;
     std::cout << "variable2: " << variable2 << endl;
-
     return 0;
 }

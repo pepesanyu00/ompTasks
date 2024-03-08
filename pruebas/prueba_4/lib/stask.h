@@ -28,7 +28,6 @@ using namespace std;
 extern bool doneFlag;
 
 #define BEGIN_STASK(thId, xId, in, out)                                        \
-    INIT_TRANSACTION();                                                         \
     BEGIN_TRANSACTION(thId, xId);                                               
 
 
@@ -41,6 +40,6 @@ extern bool doneFlag;
             std::this_thread::yield();                                    \
         }                                                                       \
     }                                                                            \
-    COMMIT_TRANSACTION(thId, xId);                                              
+    COMMIT_TRANSACTION();                                              
 
 #endif
