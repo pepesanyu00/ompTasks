@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
         {
             #pragma omp task shared(variable)
             {
-                int tid = omp_get_thread_num();
+                //int tid = omp_get_thread_num();
                 //std::cout << "tid1:" << tid << endl;
                 BEGIN_STASK(0,0,variable,0);
                 variable = 17;
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
             }
             #pragma omp task shared(variable)
             {
-                int tid = omp_get_thread_num();
+                //int tid = omp_get_thread_num();
                 //std::cout << "tid2:" << tid << endl;
                 BEGIN_STASK(1,0,0,variable);
                 variable2 = variable+1;
@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    //tend = chrono::steady_clock::now();    
-    //telapsed = tend - tstart;
-    /*if(!dumpStats(telapsed.count(),1)){
+    tend = chrono::steady_clock::now();    
+    telapsed = tend - tstart;
+    if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
-    }*/
+    }
     cout << variable << "," << variable2 << endl;
     
     return 0;
