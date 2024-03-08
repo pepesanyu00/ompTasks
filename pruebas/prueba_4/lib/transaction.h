@@ -60,7 +60,7 @@
     if (g_fallback_lock.ticket >= g_fallback_lock.turn)               \
       __builtin_tabort(LOCK_TAKEN); /*Early subscription*/            \
     __builtin_tend(0);                                                \
-  /*  profileCommit(thId, xId, __p_retries - 1);*/                    \
+    profileCommit(thId, xId, __p_retries - 1);                        \
   }                                                                   \
   else                                                                \
   {                                                                   \
