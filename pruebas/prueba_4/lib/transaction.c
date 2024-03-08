@@ -77,7 +77,9 @@ int statsFileInit(long thCount) {
   int i,j;
   char ext[25];
   //Saco la extensión con identificador de proceso para tener un archivo único
+  printf("he pasado el nombre stats.\n");
   sprintf(ext,"%d.stats", getpid());
+  printf("he pasado el nombre stats.\n");
   //El nombre del archivo es la llamada entera al programa con sus parámetros
   /*strcat(fname,"./results/");
   strcat(fname, &(argv[0][2])); //Pongo el nombre del programa sin el ./

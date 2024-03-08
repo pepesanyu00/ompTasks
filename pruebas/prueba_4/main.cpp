@@ -18,7 +18,6 @@ int variable2 = 0;
 int main(int argc, char *argv[]) {
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
-    cout << getpid() << endl;
     if(!statsFileInit(2)){
       cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
       return 0;
