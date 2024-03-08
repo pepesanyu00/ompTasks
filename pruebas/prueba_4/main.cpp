@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
                 int tid = omp_get_thread_num();
                 //std::cout << "tid1:" << tid << endl;
                 BEGIN_STASK(tid,0,variable,0);
+                cout << "he entrado" << endl;
                 variable = 17;
                 COMMIT_STASK(tid,0,variable,0);
             }
