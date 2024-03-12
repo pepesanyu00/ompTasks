@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
       cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
       return 0;
     }
-    //tstart = chrono::steady_clock::now();
+    tstart = chrono::steady_clock::now();
     #pragma omp parallel 
     {
         #pragma omp single
@@ -45,12 +45,11 @@ int main(int argc, char *argv[]) {
     }
     tend = chrono::steady_clock::now();    
     telapsed = tend - tstart;
-    double telapsed_seconds = std::chrono::duration<double>(telapsed).count();
-    if(!dumpStats(telapsed_seconds,1)){
+    if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
     }
     cout << variable << "," << variable2 << endl;
-    cout << telapsed_seconds << endl;
+    cout << telapsed.count() << endl;
     
     return 0;
 }
