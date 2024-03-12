@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Directorio que contiene los archivos .stats
-directorio="/ruta/del/directorio"
+directorio="stats"
 
 # Iterar sobre cada archivo .stats en el directorio
 for archivo in "$directorio"/*.stats; do
