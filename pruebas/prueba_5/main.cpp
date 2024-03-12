@@ -1,7 +1,4 @@
-/* Esta prueba cambia un poco el rumbo de lo que se estaba haciendo. En las anteriores implementaciones, cuando una transacción hacía commit era cuando podía
-comenzar a ejecutarse otra transacción. En esta prueba, se van a ejecutar dos transacciones en paralelo, con prioridades, de tal forma que si la segunda transacción
-termina antes que la primera, va a esperar a que la primera termine, cuando la primera termine va a hacer que la primera aborte (requester wins), haciendo que se ejecute
-de nuevo y se pueda ver el valor de la variable compartida.
+/* Esta prueba es una extensión de la prueba 4, 
 */
 
 
@@ -13,9 +10,9 @@ de nuevo y se pueda ver el valor de la variable compartida.
 
 using namespace std;
 
+int variable = 1;
+int variable2 = 0;
 int main(int argc, char *argv[]) {
-    int variable = 1;
-    int variable2 = 0;
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
     if(!statsFileInit(2)){
