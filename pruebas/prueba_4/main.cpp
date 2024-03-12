@@ -45,10 +45,12 @@ int main(int argc, char *argv[]) {
     }
     tend = chrono::steady_clock::now();    
     telapsed = tend - tstart;
-    if(!dumpStats(telapsed.count(),1)){
+    double telapsed_seconds = std::chrono::duration<double>(telapsed).count();
+    if(!dumpStats(telapsed_seconds,1)){
       cout << "Error volcando las estadísticas." << endl;
     }
     cout << variable << "," << variable2 << endl;
+    cout << telapsed_seconds << endl;
     
     return 0;
 }
