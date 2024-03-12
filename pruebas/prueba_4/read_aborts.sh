@@ -7,8 +7,8 @@ directorio="stats"
 for archivo in "$directorio"/*.stats; do
     if [ -f "$archivo" ]; then
         # Extraer la línea 9 del archivo actual y verificar si contiene "1"
-        contenido_linea_9=$(sed -n '9p' "$archivo")
-        if [[ $contenido_linea_9 == *"1"* ]]; then
+        contenido_linea_9=$(sed -n '9p' "$archivo" | grep "1")
+        if [ -n "$contenido_linea_9" ]; then
             echo "Contenido de la línea 9 en $archivo: $contenido_linea_9"
         fi
     fi
