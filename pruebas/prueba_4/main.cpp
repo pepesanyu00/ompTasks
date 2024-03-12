@@ -13,9 +13,9 @@ de nuevo y se pueda ver el valor de la variable compartida.
 
 using namespace std;
 
+int variable = 1;
+int variable2 = 0;
 int main(int argc, char *argv[]) {
-    int variable = 1;
-    int variable2 = 0;
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
     if(!statsFileInit(2)){

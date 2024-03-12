@@ -10,9 +10,40 @@
 
 using namespace std;
 
-int variable = 1;
-int variable2 = 0;
+#define SIZE 3
+
+void fill_matrix(int matrix[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            matrix[i][j] = rand() % 100;  // Genera un número aleatorio entre 0 y 99
+        }
+    }
+}
+
+void print_matrix(int matrix[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 int main(int argc, char *argv[]) {
+
+    int a[SIZE][SIZE];
+    int b[SIZE][SIZE];
+    int c[SIZE][SIZE] = {};
+    int d[SIZE][SIZE] = {};
+
+
+    fill_matrix(a);
+    fill_matrix(b);
+
+    print_matrix(a);
+    print_matrix(b);
+    print_matrix(c);
+
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
     if(!statsFileInit(2)){
@@ -24,19 +55,27 @@ int main(int argc, char *argv[]) {
     {
         #pragma omp single
         {
-            #pragma omp task shared(variable)
+            #pragma omp task shared(a, b, c)
             {
-                BEGIN_STASK(0,0,variable,0);
-                variable = 17;
-                COMMIT_STASK(0,0,variable,0);
+                BEGIN_STASK(0,0,c,0);
+                for (int i = 0; i < SIZE; ++i) {
+                    for (int j = 0; j < SIZE; ++j) {
+                        for (int k = 0; k < SIZE; ++k) {
+                            c[i][j] += a[i][k] * b[k][j];
+                        }
+                    }
+                }
+                COMMIT_STASK(0,0,c,0);
             }
-            #pragma omp task shared(variable)
+            #pragma omp task shared(c)
             {
-                //int tid = omp_get_thread_num();
-                //std::cout << "tid2:" << tid << endl;
-                BEGIN_STASK(1,1,0,variable);
-                variable2 = variable+1;
-                COMMIT_STASK(1,1,0,variable);
+                BEGIN_STASK(1,1,0,c);
+                for (int i = 0; i < SIZE; ++i) {
+                    for (int j = 0; j < SIZE; ++j) {
+                        d[i][j] = c[i][j]+1;
+                    }
+                }
+                COMMIT_STASK(1,1,0,c);
             }
         }
     }
@@ -45,7 +84,7 @@ int main(int argc, char *argv[]) {
     if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
     }
-    cout << variable << "," << variable2 << endl;
+    print_matrix(d);
     cout << telapsed.count() << endl;
     
     return 0;
