@@ -29,13 +29,12 @@ void print_matrix(int matrix[SIZE][SIZE]) {
     }
 }
 
-int main(int argc, char *argv[]) {
-
     int a[SIZE][SIZE];
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
     int d[SIZE][SIZE] = {};
 
+int main(int argc, char *argv[]) {
 
     fill_matrix(a);
     fill_matrix(b);
