@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define SIZE 1000
+#define SIZE 2000
 
 void fill_matrix(int matrix[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; ++i) {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     {
         #pragma omp single
         {
-            #pragma omp task shared(a, b, c)
+            #pragma omp task shared(a, b, c) depend(out: c)
             {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
             }
-            #pragma omp task shared(c)
+            #pragma omp task shared(c) depend(in: c)
             {
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
