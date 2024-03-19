@@ -21,9 +21,6 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 using namespace std;
 
 
-#define BEGIN_ESCAPE __builtin_tsuspend()
-#define END_ESCAPE __builtin_tresume()
-
 //Flag que indica a una transacción que contiene algún out si puede terminar o no
 extern bool doneFlag;
 
