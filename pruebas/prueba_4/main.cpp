@@ -18,7 +18,7 @@ int variable2 = 0;
 int main(int argc, char *argv[]) {
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
-    if(!statsFileInit(2)){
+    if(!statsFileInit(2,2)){
       cout << "Error abriendo o inicializando el archivo de estadísticas." << endl;
       return 0;
     }
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     }
     tend = chrono::steady_clock::now();    
     telapsed = tend - tstart;
-    if(!dumpStats(telapsed.count(),1)){
+    if(!dumpStats()){
       cout << "Error volcando las estadísticas." << endl;
     }
     cout << variable << "," << variable2 << endl;

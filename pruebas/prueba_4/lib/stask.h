@@ -17,7 +17,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <list>
 #include <algorithm>
 #include <thread>
-#include "transaction.h"
+#include "rtmIntel.h"
 using namespace std;
 
 
@@ -38,6 +38,7 @@ extern bool doneFlag;
     }                                                                            \
     if(out){                                                                   \
         while(!doneFlag){                                                    \
+            std::this_thread::yield();                                    \
         }                                                                       \
     }                                                                            \
     COMMIT_TRANSACTION(thId, xId);                                              
