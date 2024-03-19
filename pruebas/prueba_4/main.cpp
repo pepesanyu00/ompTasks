@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
             #pragma omp task shared(variable)
             {
                 BEGIN_STASK(0,0,variable,0);
+            
                 variable = 17;
                 COMMIT_STASK(0,0,variable,0);
             }
