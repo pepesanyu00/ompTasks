@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
     if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
     }
-    cout << d[100][100] << endl;
+    cout << d[10][10] << endl;
     cout << telapsed.count() << endl;
     
     return 0;
