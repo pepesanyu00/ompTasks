@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define SIZE 100
+#define SIZE 1000
 
 void fill_matrix(int matrix[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; ++i) {
@@ -39,9 +39,9 @@ int main(int argc, char *argv[]) {
     fill_matrix(a);
     fill_matrix(b);
 
-    print_matrix(a);
-    print_matrix(b);
-    print_matrix(c);
+    //print_matrix(a);
+    //print_matrix(b);
+    //print_matrix(c);
 
     chrono::steady_clock::time_point tstart, tend;
     chrono::duration<double> telapsed;
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
     if(!dumpStats(telapsed.count(),1)){
       cout << "Error volcando las estadísticas." << endl;
     }
-    print_matrix(d);
+    cout << d[100][100] << endl;
     cout << telapsed.count() << endl;
     
     return 0;
