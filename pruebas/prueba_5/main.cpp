@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define SIZE 20
+#define SIZE 10
 
 void fill_matrix(int matrix[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; ++i) {
