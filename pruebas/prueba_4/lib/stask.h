@@ -38,7 +38,6 @@ extern bool doneFlag;
     }                                                                            \
     if(out){                                                                   \
         while(!doneFlag){                                                    \
-            std::this_thread::yield();                                    \
         }                                                                       \
     }                                                                            \
     COMMIT_TRANSACTION(thId, xId);                                              

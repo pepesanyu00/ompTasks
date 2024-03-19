@@ -12,9 +12,7 @@ public:
         Task task;
         task.function = function;
         task.arg = arg;
-        taskQueue.push(task);
-        // Señalar a los demás hilos que hay una nueva tarea disponible
-        
+        taskQueue.push(task);        
     }
 
 
@@ -23,8 +21,9 @@ public:
             Task task;
             if (taskQueue.try_pop(task)) {
                 task.function(task.arg);
+                break;
             } else {
-                // Bloquear hasta que haya una tarea disponible
+                std::this_thread::yield();
             }
         }
     }
