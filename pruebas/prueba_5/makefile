@@ -7,7 +7,7 @@ tasks: main.cpp lib/transaction.c lib/stask.cpp
 	g++ $(CFLAGS) main.cpp lib/transaction.c lib/stask.cpp -o tasks $(LFLAGS)
 
 no_transact: sin_transaccion.cpp lib/transaction.c lib/stask.cpp
-	g++ $(CFLAGS) sin_transaccion.cpp lib/transaction.c lib/stask.cpp -o tasks $(LFLAGS)
+	g++ $(CFLAGS) sin_transaccion.cpp lib/transaction.c lib/stask.cpp -o no_transact $(LFLAGS)
 clean:
 	rm -f tasks no_transact
 	rm -rf stats/*
