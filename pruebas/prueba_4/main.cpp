@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     }
     tstart = chrono::steady_clock::now();
     #pragma omp parallel 
-    {
+    {   
         #pragma omp single
         {
             #pragma omp task shared(variable)
