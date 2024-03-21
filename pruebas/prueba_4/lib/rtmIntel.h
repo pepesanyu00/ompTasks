@@ -74,18 +74,6 @@ Abort a transaction.
                                  : "memory")
 /*#define CPU_RELAX()*/
 
-//#include "rtm.h"
-//#define XTEST() _xtest()
-
-/* Status bits */
-/*#define XBEGIN_STARTED (~0u)
-#define XABORT_EXPLICIT (1 << 0)
-#define XABORT_RETRY (1 << 1)
-#define XABORT_CONFLICT (1 << 2)
-#define XABORT_CAPACITY (1 << 3)
-#define XABORT_DEBUG (1 << 4)
-#define XABORT_NESTED (1 << 5)
-#define XABORT_CODE(x) (((x) >> 24) & 0xff) */
 //RIC
 #define LOCK_TAKEN 0xFF
 
@@ -112,28 +100,28 @@ Abort a transaction.
 #define INIT_TRANSACTION() \
   unsigned long __p_status, __p_retries
 
-#define BEGIN_TRANSACTION(thId, xId)                                           \
-  __p_retries = 0;                                                             \
-  do                                                                           \
-  {                                                                            \
-    if (__p_retries)                                                           \
-      profileAbortStatus(__p_status, thId, xId);                               \
-    __p_retries++;                                                             \
-    if (__p_retries > GLOBAL_RETRIES)                                          \
-    {                                                                          \
-      unsigned int myticket = __sync_add_and_fetch(&(g_ticketlock.ticket), 1); \
-      while (myticket != g_ticketlock.turn)                                    \
-        CPU_RELAX();                                                           \
-      break;                                                                   \
-    }                                                                          \
-    while (g_ticketlock.ticket >= g_ticketlock.turn)                           \
-      CPU_RELAX(); /* Avoid Lemming effect */                                  \
+#define BEGIN_TRANSACTION(thId, xId)                                                              \
+  __p_retries = 0;                                                                                \
+  do                                                                                              \
+  {                                                                                               \
+    if (__p_retries) /* se hace profile  y aumentan los retries*/                                 \
+      profileAbortStatus(__p_status, thId, xId);                                                  \
+    __p_retries++;                                                                                \
+    if (__p_retries > GLOBAL_RETRIES)/* se aborta y se aplica un mecanismo de locks normal*/      \
+    {                                                                                             \
+      unsigned int myticket = __sync_add_and_fetch(&(g_ticketlock.ticket), 1);                    \
+      while (myticket != g_ticketlock.turn)                                                       \
+        CPU_RELAX();                                                                              \
+      break;                                                                                      \
+    }                                                                                             \
+    while (g_ticketlock.ticket >= g_ticketlock.turn)  /* Solo se ejecuta si algún hilo ha adquirido un ticket (serialización)*/ \
+      CPU_RELAX(); /* Avoid Lemming effect */                                                     \
   } while ((__p_status = _xbegin()) != _XBEGIN_STARTED)
 
 #define COMMIT_TRANSACTION(thId, xId)              \
   if (__p_retries <= GLOBAL_RETRIES)               \
   {                                                \
-    if (g_ticketlock.ticket >= g_ticketlock.turn)  \
+    if (g_ticketlock.ticket >= g_ticketlock.turn) /* Indica que la ejecución se está serializando y por tanto se aborta la transaccion*/ \
       _xabort(LOCK_TAKEN); /*Lazy subscription*/   \
     _xend();                                       \
     profileCommit(thId, xId, __p_retries - 1);     \
