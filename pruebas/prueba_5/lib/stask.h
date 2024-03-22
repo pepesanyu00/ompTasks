@@ -17,22 +17,19 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <list>
 #include <algorithm>
 #include <thread>
-#include "transaction.h"
+#include "rtmIntel.h"
 using namespace std;
 
 
-#define BEGIN_ESCAPE __builtin_tsuspend()
-#define END_ESCAPE __builtin_tresume()
 
 //Flag que indica a una transacción que contiene algún out si puede terminar o no
 extern bool doneFlag;
 
-#define BEGIN_STASK(thId, xId, in, out)                                        \
-    INIT_TRANSACTION();                                                         \
-    BEGIN_TRANSACTION(thId, xId);                                               
+#define BEGIN_STASK(xId, in, out)                                        \
+    BEGIN_TRANSACTION(xId);                                               
 
 
-#define COMMIT_STASK(thId, xId, in, out)                                           \
+#define COMMIT_STASK(xId, in, out)                                           \
     if(in){                                                                      \
         doneFlag = true;                                                      \
     }                                                                            \
@@ -41,6 +38,6 @@ extern bool doneFlag;
             std::this_thread::yield();                                    \
         }                                                                       \
     }                                                                            \
-    COMMIT_TRANSACTION(thId, xId);                                              
+    COMMIT_TRANSACTION(xId);                                              
 
 #endif

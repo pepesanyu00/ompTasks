@@ -10,114 +10,32 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <immintrin.h>
-/*
- * Copyright (c) 2012,2013 Intel Corporation
- * Author: Andi Kleen
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that: (1) source code distributions
- * retain the above copyright notice and this paragraph in its entirety, (2)
- * distributions including binary code include the above copyright notice and
- * this paragraph in its entirety in the documentation or other materials
- * provided with the distribution
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- */
 
-/*
-This file provide an alternative RTM intrinsics implementation using
-the "asm goto" gcc extension. This will only work on gcc 4.7+ or
-gcc 4.6 with backport (Fedora). It exposes the jump to the abort
-handler to the programmer, which can save a few instructions.
-XBEGIN(label)
-Start a transaction. When an abort happens jump to the XFAIL* defined
-by "label".
-When the CPU does not support transactions this will unconditionally
-jump to label.
-XEND()
-End a transaction. Must match a XBEGIN().
-XFAIL(label)
-Begin a fallback handler that is jumped too from XBEGIN in case of a 
-transaction abort. Must be in the same function as the XBEGIN().
-XFAIL acts like a label.
-Note: caller must ensure to not execute the code when not jumped too, e.g.
-by placing an if (0) around it, unless this is intended.
-The fail handler should not execute XEND() for the transaction.
-XFAIL_STATUS(label, status)
-Same as XFAIL(), but supply a status code containing the reason 
-for the abort. See below for the valid status bits.
-XABORT(x) 
-Abort a transaction.
- */
-
-/*#define XABORT(status) asm volatile(".byte 0xc6,0xf8,%P0" ::"i"(status))
-#define XBEGIN(label)                                       \
-  asm volatile goto(".byte 0xc7,0xf8 ; .long %l0-1f\n1:" :: \
-                        : "eax"                             \
-                    : label)
-#define XEND() asm volatile(".byte 0x0f,0x01,0xd5")
-#define XFAIL(label) \
-  label:             \
-  asm volatile("" :: \
-                   : "eax")
-#define XFAIL_STATUS(label, status) \
-  label:                            \
-  asm volatile(""                   \
-               : "=a"(status))
-               */
 //RIC Meto pausa recomendada por Intel para mejorar la eficiencia en spinlocks
 #define CPU_RELAX() asm volatile("pause\n" \
                                  :         \
                                  :         \
                                  : "memory")
-/*#define CPU_RELAX()*/
 
-//#include "rtm.h"
-//#define XTEST() _xtest()
-
-/* Status bits */
-/*#define XBEGIN_STARTED (~0u)
-#define XABORT_EXPLICIT (1 << 0)
-#define XABORT_RETRY (1 << 1)
-#define XABORT_CONFLICT (1 << 2)
-#define XABORT_CAPACITY (1 << 3)
-#define XABORT_DEBUG (1 << 4)
-#define XABORT_NESTED (1 << 5)
-#define XABORT_CODE(x) (((x) >> 24) & 0xff) */
-//RIC
 #define LOCK_TAKEN 0xFF
-
-#define MAX_THREADS 128
 
 #define CACHE_BLOCK_SIZE 64
 
-#define GLOBAL_RETRIES 3
-
-#define VALIDATION_ERROR 0xFE
-
-#define MAX_THREADS 128
-#define MAX_SPEC    4
-#define MAX_RETRIES 5
-
-#define MAX_XACT_IDS 4
-#define SPEC_XACT_ID MAX_XACT_IDS-1
-
-
+#define GLOBAL_RETRIES 5
 
 #define BEGIN_ESCAPE _xsusldtrk()
 #define END_ESCAPE _xresldtrk()
 
-#define INIT_TRANSACTION() \
-  unsigned long __p_status, __p_retries
 
-#define BEGIN_TRANSACTION(thId, xId)                                           \
+
+#define BEGIN_TRANSACTION( xId)                                           \
+  unsigned long __p_status, __p_retries;                                       \
   __p_retries = 0;                                                             \
   do                                                                           \
   {                                                                            \
-    if (__p_retries)                                                           \
-      profileAbortStatus(__p_status, thId, xId);                               \
+    if (__p_retries){                                                          \
+      profileAbortStatus(__p_status, xId);                               \
+    }                                                                          \
     __p_retries++;                                                             \
     if (__p_retries > GLOBAL_RETRIES)                                          \
     {                                                                          \
@@ -130,18 +48,18 @@ Abort a transaction.
       CPU_RELAX(); /* Avoid Lemming effect */                                  \
   } while ((__p_status = _xbegin()) != _XBEGIN_STARTED)
 
-#define COMMIT_TRANSACTION(thId, xId)              \
+#define COMMIT_TRANSACTION(xId)              \
   if (__p_retries <= GLOBAL_RETRIES)               \
   {                                                \
     if (g_ticketlock.ticket >= g_ticketlock.turn)  \
       _xabort(LOCK_TAKEN); /*Lazy subscription*/   \
     _xend();                                       \
-    profileCommit(thId, xId, __p_retries - 1);     \
+    profileCommit( xId, __p_retries - 1);     \
   }                                                \
   else                                             \
   {                                                \
     __sync_add_and_fetch(&(g_ticketlock.turn), 1); \
-    profileFallback(thId, xId, __p_retries - 1);   \
+    profileFallback( xId, __p_retries - 1);   \
   }
 
 
@@ -177,17 +95,17 @@ struct TicketLock
 };
 
 extern struct TicketLock g_ticketlock;
-extern struct Stats **stats;
+extern struct Stats *stats;
 //extern long GLOBAL_RETRIES;
 //extern volatile unsigned int g_ticketlock_ticket;
 //extern volatile unsigned int g_ticketlock_turn;
 
 //Funciones para el fichero de estadísticas
-int statsFileInit(long thCount, long xCount);
+int statsFileInit(long xCount);
 int dumpStats();
-unsigned long profileAbortStatus(unsigned long eax, long thread, long xid);
-void profileCommit(long thread, long xid, long retries);
-void profileFallback(long thread, long xid, long retries);
+unsigned long profileAbortStatus(unsigned long eax, long xid);
+void profileCommit(long xid, long retries);
+void profileFallback(long xid, long retries);
 
 /* Transaction descriptor. It is aligned (including stats) to CACHELINE_SIZE
  * to avoid aliases with other threads metadata */

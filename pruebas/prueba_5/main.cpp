@@ -29,12 +29,13 @@ void print_matrix(int matrix[SIZE][SIZE]) {
     }
 }
 
+
+int main(int argc, char *argv[]) {
+
     int a[SIZE][SIZE];
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
     int d[SIZE][SIZE] = {};
-
-int main(int argc, char *argv[]) {
 
     fill_matrix(a);
     fill_matrix(b);
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]) {
         {
             #pragma omp task shared(a, b, c)
             {
-                BEGIN_STASK(0,0,c,0);
+                BEGIN_STASK(0,c,0);
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         for (int k = 0; k < SIZE; ++k) {
@@ -65,26 +66,26 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
-                COMMIT_STASK(0,0,c,0);
+                COMMIT_STASK(0,c,0);
             }
             #pragma omp task shared(c)
             {
-                BEGIN_STASK(1,1,0,c);
+                BEGIN_STASK(1,0,c);
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         d[i][j] = c[i][j]+1;
                     }
                 }
-                COMMIT_STASK(1,1,0,c);
+                COMMIT_STASK(1,0,c);
             }
         }
     }
     tend = chrono::steady_clock::now();    
     telapsed = tend - tstart;
-    if(!dumpStats(telapsed.count(),1)){
+    if(!dumpStats()){
       cout << "Error volcando las estadísticas." << endl;
     }
-    cout << d[10][10] << endl;
+    cout << d[9][9] << endl;
     cout << telapsed.count() << endl;
     
     return 0;

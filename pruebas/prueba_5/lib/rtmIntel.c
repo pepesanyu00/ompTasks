@@ -17,16 +17,12 @@ volatile unsigned int g_ticketlock_ticket = 0;
 volatile unsigned int g_ticketlock_turn = 1;
 volatile char _gpad2[CACHE_BLOCK_SIZE];*/
 
-//RIC Archivo de estadísticas
-
-unsigned long barrierCounter = 0;
 
 
 
 char fname[256];
-long threadCount;
 long xactCount;
-struct Stats **stats;
+struct Stats *stats;
 struct TicketLock g_ticketlock; //Inicializo en statsFileInit el ticketlock
 
 volatile int sense = 0;
@@ -37,9 +33,9 @@ pthread_mutex_t global_lock;
 
 fback_lock_t g_fallback_lock = {.ticket = 0, .turn = 1};
 
-int statsFileInit(long thCount, long xCount)
+int statsFileInit(long xCount)
 {
-  int i, j;
+  int i;
   char ext[25];
   //Inicializo el ticket lock
   g_ticketlock.ticket = 0;
@@ -50,60 +46,51 @@ int statsFileInit(long thCount, long xCount)
   strncpy(fname, ext, sizeof(fname) - 1);
   printf("Nombre del fichero: %s\n",fname);
   //Inicio los arrays de estadísticas
-  threadCount = thCount;
   xactCount = xCount;
   //printf("thCount = %d, xCount = %d\n", threadCount, xactCount);
 
-  stats = (struct Stats **)malloc(sizeof(struct Stats *) * thCount);
+  stats = (struct Stats *)malloc(sizeof(struct Stats ) * xactCount);
   if (!stats)
     return 0;
-  for (i = 0; i < thCount; i++)
-  {
-    stats[i] = (struct Stats *)malloc(sizeof(struct Stats) * xactCount);
-    if (!stats[i])
-      return 0;
-  }
 
-  for (i = 0; i < thCount; i++)
+  for (i = 0; i < xactCount; i++)
   {
-    for (j = 0; j < xactCount; j++)
-    {
-      stats[i][j].xabortCount = 0;
-      stats[i][j].explicitAborts = 0;
-      stats[i][j].explicitAbortsSubs = 0;
-      stats[i][j].retryAborts = 0;
-      stats[i][j].retryCapacityAborts = 0;
-      stats[i][j].retryConflictAborts = 0;
-      stats[i][j].conflictAborts = 0;
-      stats[i][j].capacityAborts = 0;
-      stats[i][j].debugAborts = 0;
-      stats[i][j].nestedAborts = 0;
-      stats[i][j].eaxzeroAborts = 0;
-      stats[i][j].xcommitCount = 0;
-      stats[i][j].fallbackCount = 0;
-      stats[i][j].retryCCount = 0;
-      stats[i][j].retryFCount = 0;
-    }
+    stats[i].xabortCount = 0;
+    stats[i].explicitAborts = 0;
+    stats[i].explicitAbortsSubs = 0;
+    stats[i].retryAborts = 0;
+    stats[i].retryCapacityAborts = 0;
+    stats[i].retryConflictAborts = 0;
+    stats[i].conflictAborts = 0;
+    stats[i].capacityAborts = 0;
+    stats[i].debugAborts = 0;
+    stats[i].nestedAborts = 0;
+    stats[i].eaxzeroAborts = 0;
+    stats[i].xcommitCount = 0;
+    stats[i].fallbackCount = 0;
+    stats[i].retryCCount = 0;
+    stats[i].retryFCount = 0;
   }
+  
 
   return 1;
 }
-unsigned long profileAbortStatus(unsigned long eax, long thread, long xid)
+unsigned long profileAbortStatus(unsigned long eax, long xid)
 {
-  stats[thread][xid].xabortCount++;
+  stats[xid].xabortCount++;
   if (eax & _XABORT_EXPLICIT)
   {
-    stats[thread][xid].explicitAborts++;
+    stats[xid].explicitAborts++;
     if (_XABORT_CODE(eax) == LOCK_TAKEN)
-      stats[thread][xid].explicitAbortsSubs++;
+      stats[xid].explicitAbortsSubs++;
   }
   if (eax & _XABORT_RETRY)
   {
-    stats[thread][xid].retryAborts++;
+    stats[xid].retryAborts++;
     if (eax & _XABORT_CONFLICT)
-      stats[thread][xid].retryConflictAborts++;
+      stats[xid].retryConflictAborts++;
     if (eax & _XABORT_CAPACITY)
-      stats[thread][xid].retryCapacityAborts++;
+      stats[xid].retryCapacityAborts++;
     if (eax & _XABORT_DEBUG)
       assert(0);
     if (eax & _XABORT_NESTED)
@@ -111,44 +98,44 @@ unsigned long profileAbortStatus(unsigned long eax, long thread, long xid)
   }
   if (eax & _XABORT_CONFLICT)
   {
-    stats[thread][xid].conflictAborts++;
+    stats[xid].conflictAborts++;
   }
   if (eax & _XABORT_CAPACITY)
   {
-    stats[thread][xid].capacityAborts++;
+    stats[xid].capacityAborts++;
   }
   if (eax & _XABORT_DEBUG)
   {
-    stats[thread][xid].debugAborts++;
+    stats[xid].debugAborts++;
   }
   if (eax & _XABORT_NESTED)
   {
-    stats[thread][xid].nestedAborts++;
+    stats[xid].nestedAborts++;
   }
   if (eax == 0)
   {
     //Todos los bits a cero (puede ocurrir por una llamada a CPUID u otro cosa)
     //Véase Section 8.3.5 RTM Abort Status Definition del Intel Architecture
     //Instruction Set Extensions Programming Reference (2012))
-    stats[thread][xid].eaxzeroAborts++;
+    stats[xid].eaxzeroAborts++;
   }
   return 0;
 }
-void profileCommit(long thread, long xid, long retries)
+void profileCommit(long xid, long retries)
 {
-  stats[thread][xid].xcommitCount++;
-  stats[thread][xid].retryCCount += retries;
+  stats[xid].xcommitCount++;
+  stats[xid].retryCCount += retries;
 }
-void profileFallback(long thread, long xid, long retries)
+void profileFallback(long xid, long retries)
 {
-  stats[thread][xid].fallbackCount++;
-  stats[thread][xid].retryFCount += retries;
+  stats[xid].fallbackCount++;
+  stats[xid].retryFCount += retries;
 }
 
 int dumpStats()
 {
   FILE *f;
-  int i, j;
+  int j;
   unsigned long int tmp, comm, fall, retComm;
 
   //Creo el fichero
@@ -157,14 +144,13 @@ int dumpStats()
     return 0;
   printf("Writing TM stats to: %s\n", fname);
   fprintf(f, "-----------------------------------------\nOutput file: %s\n----------------- Stats -----------------\n", fname);
-  fprintf(f, "#Threads: %li\n", threadCount);
+  fprintf(f, "#Threads: %li\n", xactCount);
 
   fprintf(f, "Abort Count:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].xabortCount)
-      fprintf(f, "%lu ", stats[i][j].xabortCount);
+    fprintf(f, "%lu ", stats[j].xabortCount);
   }
   fprintf(f, "Total: %lu\n", tmp);
 
@@ -172,8 +158,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].explicitAborts)
-      fprintf(f, "%lu ", stats[i][j].explicitAborts);
+    fprintf(f, "%lu ", stats[j].explicitAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -181,8 +166,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].explicitAbortsSubs)
-      fprintf(f, "%lu ", stats[i][j].explicitAbortsSubs);
+    fprintf(f, "%lu ", stats[j].explicitAbortsSubs);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -190,8 +174,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].retryAborts)
-      fprintf(f, "%lu ", stats[i][j].retryAborts);
+    fprintf(f, "%lu ", stats[j].retryAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -199,8 +182,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].retryConflictAborts)
-      fprintf(f, "%lu ", stats[i][j].retryConflictAborts);
+    fprintf(f, "%lu ", stats[j].retryConflictAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -208,8 +190,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].retryCapacityAborts)
-      fprintf(f, "%lu ", stats[i][j].retryCapacityAborts);
+    fprintf(f, "%lu ", stats[j].retryCapacityAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -217,8 +198,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].conflictAborts)
-      fprintf(f, "%lu ", stats[i][j].conflictAborts);
+    fprintf(f, "%lu ", stats[j].conflictAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -226,8 +206,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].capacityAborts)
-      fprintf(f, "%lu ", stats[i][j].capacityAborts);
+    fprintf(f, "%lu ", stats[j].capacityAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -235,8 +214,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].debugAborts)
-      fprintf(f, "%lu ", stats[i][j].debugAborts);
+    fprintf(f, "%lu ", stats[j].debugAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -244,8 +222,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].nestedAborts)
-      fprintf(f, "%lu ", stats[i][j].nestedAborts);
+    fprintf(f, "%lu ", stats[j].nestedAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -253,8 +230,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].eaxzeroAborts)
-      fprintf(f, "%lu ", stats[i][j].eaxzeroAborts);
+    fprintf(f, "%lu ", stats[j].eaxzeroAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -262,8 +238,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].xcommitCount)
-      fprintf(f, "%lu ", stats[i][j].xcommitCount);
+    fprintf(f, "%lu ", stats[j].xcommitCount);
   }
   fprintf(f, " Total: %lu\n", tmp);
   comm = tmp;
@@ -272,8 +247,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].fallbackCount)
-      fprintf(f, "%lu ", stats[i][j].fallbackCount);
+    fprintf(f, "%lu ", stats[j].fallbackCount);
   }
   fprintf(f, " Total: %lu\n", tmp);
   fall = tmp;
@@ -282,8 +256,7 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].retryCCount)
-      fprintf(f, "%lu ", stats[i][j].retryCCount);
+    fprintf(f, "%lu ", stats[j].retryCCount);
   }
   fprintf(f, "Total: %lu ", tmp);
   retComm = tmp;
@@ -293,16 +266,13 @@ int dumpStats()
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
-    for (i = 0; i < threadCount; tmp += stats[i++][j].retryFCount)
-      fprintf(f, "%lu ", stats[i][j].retryFCount);
+    fprintf(f, "%lu ", stats[j].retryFCount);
   }
   fprintf(f, "Total: %lu ", tmp);
   fprintf(f, "PerXact: %f\nRetriesAvg: %f\n", (float)tmp / (float)fall,
           (float)(retComm + tmp) / (float)(comm + fall));
 
   fclose(f);
-  for (i = 0; i < threadCount; i++)
-    free(stats[i]);
   free(stats);
   return 1;
 }
