@@ -17,6 +17,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <list>
 #include <algorithm>
 #include <thread>
+#include <atomic>
 #include "rtmIntel.h"
 using namespace std;
 
@@ -25,11 +26,15 @@ using namespace std;
 //Flag que indica a una transacción que contiene algún out si puede terminar o no
 extern bool doneFlag;
 
-#define BEGIN_STASK(xId, in, out)                                        \
+//Variable que almacena el id de transaccion automáticamente desde el código
+extern std::atomic<long> xIdCounter;
+
+#define BEGIN_STASK(in, out)                                        \
+    long xId = xIdCounter.fetch_add(1);                         \
     BEGIN_TRANSACTION(xId);                                               
 
 
-#define COMMIT_STASK(xId, in, out)                                           \
+#define COMMIT_STASK(in, out)                                           \
     if(in){                                                                      \
         doneFlag = true;                                                      \
     }                                                                            \

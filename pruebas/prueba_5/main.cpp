@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         {
             #pragma omp task shared(a, b, c)
             {
-                BEGIN_STASK(0,c,0);
+                BEGIN_STASK(c,0);
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         for (int k = 0; k < SIZE; ++k) {
@@ -66,17 +66,17 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
-                COMMIT_STASK(0,c,0);
+                COMMIT_STASK(c,0);
             }
             #pragma omp task shared(c)
             {
-                BEGIN_STASK(1,0,c);
+                BEGIN_STASK(0,c);
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         d[i][j] = c[i][j]+1;
                     }
                 }
-                COMMIT_STASK(1,0,c);
+                COMMIT_STASK(0,c);
             }
         }
     }
