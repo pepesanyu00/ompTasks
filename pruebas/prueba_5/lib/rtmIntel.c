@@ -151,6 +151,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].xabortCount);
+    tmp+= stats[j].xabortCount;
   }
   fprintf(f, "Total: %lu\n", tmp);
 
@@ -159,6 +160,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].explicitAborts);
+    tmp+= stats[j].explicitAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -167,6 +169,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].explicitAbortsSubs);
+    tmp+= stats[j].explicitAbortsSubs;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -175,6 +178,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].retryAborts);
+    tmp+= stats[j].retryAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -183,6 +187,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].retryConflictAborts);
+    tmp+= stats[j].retryConflictAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -191,6 +196,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].retryCapacityAborts);
+    tmp+= stats[j].retryCapacityAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -199,6 +205,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].conflictAborts);
+    tmp+= stats[j].conflictAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -207,6 +214,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].capacityAborts);
+    tmp+= stats[j].capacityAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -215,6 +223,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].debugAborts);
+    tmp+= stats[j].debugAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -223,6 +232,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].nestedAborts);
+    tmp+= stats[j].nestedAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -231,6 +241,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].eaxzeroAborts);
+    tmp+= stats[j].eaxzeroAborts;
   }
   fprintf(f, " Total: %lu\n", tmp);
 
@@ -239,6 +250,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].xcommitCount);
+    tmp+= stats[j].xcommitCount;
   }
   fprintf(f, " Total: %lu\n", tmp);
   comm = tmp;
@@ -248,6 +260,7 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].fallbackCount);
+    tmp+= stats[j].fallbackCount;
   }
   fprintf(f, " Total: %lu\n", tmp);
   fall = tmp;
@@ -257,16 +270,18 @@ int dumpStats()
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].retryCCount);
+    tmp+= stats[j].retryCCount;
   }
   fprintf(f, "Total: %lu ", tmp);
   retComm = tmp;
-  fprintf(f, "PerXact: %f\n", (float)tmp / (float)comm);
+  fprintf(f, "PerXact: %f\n", (float)tmp / (float)xactCount);
 
   fprintf(f, "RetriesFallbacked:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
     fprintf(f, " XID%d: ", j);
     fprintf(f, "%lu ", stats[j].retryFCount);
+    tmp+= stats[j].retryFCount;
   }
   fprintf(f, "Total: %lu ", tmp);
   fprintf(f, "PerXact: %f\nRetriesAvg: %f\n", (float)tmp / (float)fall,
