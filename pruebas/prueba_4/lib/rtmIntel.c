@@ -158,7 +158,7 @@ int dumpStats()
   printf("Writing TM stats to: %s\n", fname);
   fprintf(f, "-----------------------------------------\nOutput file: %s\n----------------- Stats -----------------\n", fname);
   fprintf(f, "#Threads: %li\n", threadCount);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Abort Count:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -167,7 +167,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].xabortCount);
   }
   fprintf(f, "Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Explicit aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -176,7 +176,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].explicitAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "  »     Subs:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -185,7 +185,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].explicitAbortsSubs);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Retry aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -194,7 +194,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].retryAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "  »     Con:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -203,7 +203,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].retryConflictAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "  »     Cap:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -212,7 +212,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].retryCapacityAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Conflict aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -221,7 +221,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].conflictAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Capacity aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -230,7 +230,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].capacityAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Debug aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -239,7 +239,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].debugAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Nested aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -248,7 +248,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].nestedAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "eax=0 aborts:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -257,7 +257,7 @@ int dumpStats()
       fprintf(f, "%lu ", stats[i][j].eaxzeroAborts);
   }
   fprintf(f, " Total: %lu\n", tmp);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Commits:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -267,7 +267,7 @@ int dumpStats()
   }
   fprintf(f, " Total: %lu\n", tmp);
   comm = tmp;
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "Fallbacks:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -277,7 +277,7 @@ int dumpStats()
   }
   fprintf(f, " Total: %lu\n", tmp);
   fall = tmp;
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "RetriesCommited:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -288,7 +288,7 @@ int dumpStats()
   fprintf(f, "Total: %lu ", tmp);
   retComm = tmp;
   fprintf(f, "PerXact: %f\n", (float)tmp / (float)comm);
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fprintf(f, "RetriesFallbacked:");
   for (j = 0, tmp = 0; j < xactCount; j++)
   {
@@ -299,7 +299,7 @@ int dumpStats()
   fprintf(f, "Total: %lu ", tmp);
   fprintf(f, "PerXact: %f\nRetriesAvg: %f\n", (float)tmp / (float)fall,
           (float)(retComm + tmp) / (float)(comm + fall));
-
+  /*----------------------------------------------------------------------------------------------------------------------------*/
   fclose(f);
   for (i = 0; i < threadCount; i++)
     free(stats[i]);
