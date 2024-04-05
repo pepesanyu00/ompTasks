@@ -12,6 +12,11 @@
 #include "htmintrin.h"
 
 
+#define CPU_RELAX() asm volatile("pause\n" \
+                                 :         \
+                                 :         \
+                                 : "memory")
+
 //RIC
 #define LOCK_TAKEN 0xFF
 #define VALIDATION_ERROR 0xFE
