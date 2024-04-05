@@ -41,7 +41,7 @@ extern std::atomic<long> xIdCounter;
     }                                                                            \
     if(out){                                                                   \
         while(!doneFlag){                                                    \
-            CPU_RELAX();                                    \
+            std::this_thread::yield();                                    \
         }                                                                       \
     }                                                                            \
     COMMIT_TRANSACTION(thId, xId);                                              
