@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     {
         #pragma omp single
         {
-            #pragma omp task shared(a, b, c)
+            #pragma omp task
             {
                 BEGIN_STASK(c,0);
                 for (int i = 0; i < SIZE; ++i) {
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
                 }
                 COMMIT_STASK(c,0);
             }
-            #pragma omp task shared(c)
+            #pragma omp task
             {
                 BEGIN_STASK(0,c);
                 for (int i = 0; i < SIZE; ++i) {

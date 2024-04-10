@@ -19,7 +19,6 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <thread>
 #include <atomic>
 #include "rtmIntel.h"
-using namespace std;
 
 
 
@@ -40,7 +39,9 @@ extern std::atomic<long> xIdCounter;
     }                                                                            \
     if(out){                                                                   \
         while(!doneFlag){                                                    \
+            BEGIN_ESCAPE;                                                      \
             CPU_RELAX();                                    \
+            END_ESCAPE;                                                        \
         }                                                                       \
     }                                                                            \
     COMMIT_TRANSACTION(xId);                                              
