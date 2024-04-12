@@ -19,6 +19,7 @@ begin antes que la 0, deberá esperar a que la 0 haga commit para poder ejecutar
 #include <thread>
 #include <atomic>
 #include <variant>
+#include <unordered_map>
 #include "rtmIntel.h"
 
 
