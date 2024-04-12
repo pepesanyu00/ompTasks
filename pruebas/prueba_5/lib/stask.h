@@ -34,10 +34,10 @@ extern std::atomic<long> xIdCounter;
 
 
 #define COMMIT_STASK(in, out)                                           \
-    if(in){                                                                      \
+    if(out){                                                                      \
         doneFlag = true;                                                      \
     }                                                                            \
-    if(out){                                                                   \
+    if(in){                                                                   \
         while(!doneFlag){                                                    \
             BEGIN_ESCAPE;                                                      \
             CPU_RELAX();                                    \

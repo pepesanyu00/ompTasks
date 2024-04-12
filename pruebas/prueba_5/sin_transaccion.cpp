@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define SIZE 2000
+#define SIZE 10
 
 void fill_matrix(int matrix[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; ++i) {
@@ -29,12 +29,14 @@ void print_matrix(int matrix[SIZE][SIZE]) {
     }
 }
 
+
+int main(int argc, char *argv[]) {
+
     int a[SIZE][SIZE];
     int b[SIZE][SIZE];
     int c[SIZE][SIZE] = {};
     int d[SIZE][SIZE] = {};
 
-int main(int argc, char *argv[]) {
 
     fill_matrix(a);
     fill_matrix(b);
@@ -50,25 +52,27 @@ int main(int argc, char *argv[]) {
       return 0;
     }
     tstart = chrono::steady_clock::now();
-    #pragma omp parallel 
-    {
-        #pragma omp single
+    for(int k = 0; k < 10000; k++){
+        #pragma omp parallel 
         {
-            #pragma omp task shared(a, b, c) depend(out: c)
+            #pragma omp single
             {
-                for (int i = 0; i < SIZE; ++i) {
-                    for (int j = 0; j < SIZE; ++j) {
-                        for (int k = 0; k < SIZE; ++k) {
-                            c[i][j] += a[i][k] * b[k][j];
+                #pragma omp task shared(a, b, c) depend(out: c)
+                {
+                    for (int i = 0; i < SIZE; ++i) {
+                        for (int j = 0; j < SIZE; ++j) {
+                            for (int k = 0; k < SIZE; ++k) {
+                                c[i][j] += a[i][k] * b[k][j];
+                            }
                         }
                     }
                 }
-            }
-            #pragma omp task shared(c) depend(in: c)
-            {
-                for (int i = 0; i < SIZE; ++i) {
-                    for (int j = 0; j < SIZE; ++j) {
-                        d[i][j] = c[i][j]+1;
+                #pragma omp task shared(c) depend(in: c)
+                {
+                    for (int i = 0; i < SIZE; ++i) {
+                        for (int j = 0; j < SIZE; ++j) {
+                            d[i][j] = c[i][j]+1;
+                        }
                     }
                 }
             }
@@ -76,10 +80,10 @@ int main(int argc, char *argv[]) {
     }
     tend = chrono::steady_clock::now();    
     telapsed = tend - tstart;
-    if(!dumpStats(telapsed.count(),1)){
+    if(!dumpStats()){
       cout << "Error volcando las estadísticas." << endl;
     }
-    cout << d[100][100] << endl;
+    cout << d[9][9] << endl;
     cout << telapsed.count() << endl;
     
     return 0;
