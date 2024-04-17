@@ -1,5 +1,5 @@
 #include "stask.h"
 
 
-std::unordered_map<std::variant<int, float, std::string>, bool> map;
+std::unordered_map<void*, bool> map;
 std::atomic<long> xIdCounter(0);
