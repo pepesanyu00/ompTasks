@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         {
             #pragma omp task
             {
-                BEGIN_STASK(0,c);
+                BEGIN_STASK_OUT(c);
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         for (int k = 0; k < SIZE; ++k) {
@@ -66,17 +66,17 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
-                COMMIT_STASK(0,c);
+                COMMIT_STASK_OUT(c);
             }
             #pragma omp task
             {
-                BEGIN_STASK(c,0);
+                BEGIN_STASK_IN(c);
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         d[i][j] = c[i][j]+1;
                     }
                 }
-                COMMIT_STASK(c,0);
+                COMMIT_STASK_IN(c);
             }
         }
     }
