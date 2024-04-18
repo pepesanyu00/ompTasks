@@ -34,6 +34,15 @@ extern std::unordered_map<void*, bool> map;
 //Variable que almacena el id de transaccion automáticamente desde el código
 extern std::atomic<long> xIdCounter;
 
+
+#define PRINT_MAP(map) \
+    for(const auto& pair : map) { \
+        BEGIN_ESCAPE; \
+        cout << pair.first << ": " << (pair.second ? "true" : "false") << std::endl; \
+        END_ESCAPE; \
+    }
+
+
 // MACROS PARA STASK SIN DEPENDENCIAS
 
 #define BEGIN_STASK()                                        \
@@ -49,10 +58,11 @@ extern std::atomic<long> xIdCounter;
 
 
 #define COMMIT_STASK_IN(in)                                        \
+    /*PRINT_MAP(map);*/                                                    \
     while(map[&in] == false){                                                    \
-        BEGIN_ESCAPE;                                                      \
+        /*BEGIN_ESCAPE;*/                                                      \
         CPU_RELAX();                                    \
-        END_ESCAPE;                                                        \
+        /*END_ESCAPE;  */                                                      \
     }                                                                            \
     COMMIT_TRANSACTION(xId);        
 
@@ -61,7 +71,7 @@ extern std::atomic<long> xIdCounter;
 #define BEGIN_STASK_OUT(out)                                        \
     long xId = xIdCounter.fetch_add(1);                           \
     map[&out] = false;                                    \
-    BEGIN_TRANSACTION(xId);    
+    BEGIN_TRANSACTION(xId);                                 
 
 #define COMMIT_STASK_OUT(out)                                        \
     map[&out] = true;                                                      \

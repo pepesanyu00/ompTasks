@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
     fill_matrix(a);
     fill_matrix(b);
 
+    //omp_set_num_threads(3);
     //print_matrix(a);
     //print_matrix(b);
     //print_matrix(c);
@@ -58,10 +59,10 @@ int main(int argc, char *argv[]) {
             #pragma omp task
             {
                 BEGIN_STASK_OUT(c);
+                //cout << "1" << endl;
                 for (int i = 0; i < SIZE; ++i) {
                     for (int j = 0; j < SIZE; ++j) {
                         for (int k = 0; k < SIZE; ++k) {
-                            
                             c[i][j] += a[i][k] * b[k][j];
                         }
                     }
@@ -72,6 +73,7 @@ int main(int argc, char *argv[]) {
             {
                 BEGIN_STASK_IN(c);
                 for (int i = 0; i < SIZE; ++i) {
+                    //cout << "2" << endl;
                     for (int j = 0; j < SIZE; ++j) {
                         d[i][j] = c[i][j]+1;
                     }

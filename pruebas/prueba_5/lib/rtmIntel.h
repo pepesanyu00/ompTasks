@@ -10,9 +10,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <immintrin.h>
+#include <xmmintrin.h>
 
 //RIC Meto pausa recomendada por Intel para mejorar la eficiencia en spinlocks
 #define CPU_RELAX() _mm_pause()
+
+/*#define CPU_RELAX() asm volatile("pause\n" \
+                                 :         \
+                                 :         \
+                                 : "memory")*/
 
 #define LOCK_TAKEN 0xFF
 
