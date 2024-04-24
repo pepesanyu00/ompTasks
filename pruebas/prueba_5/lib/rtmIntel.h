@@ -43,12 +43,16 @@
     if (__p_retries > GLOBAL_RETRIES)                                          \
     {                                                                          \
       unsigned int myticket = __sync_add_and_fetch(&(g_ticketlock.ticket), 1); \
-      while (myticket != g_ticketlock.turn)                                    \
+      cout << "soy " << xId << " e incremento ticket " << g_ticketlock.ticket << endl; \
+      while (myticket != g_ticketlock.turn){                                    \
         CPU_RELAX();                                                           \
+      }                                                                       \
       break;                                                                   \
     }                                                                          \
-    while (g_ticketlock.ticket >= g_ticketlock.turn)                           \
+    while (g_ticketlock.ticket >= g_ticketlock.turn){                           \
       CPU_RELAX(); /* Avoid Lemming effect */                                  \
+                /*cout << "soy " << xId << " y espero " << g_ticketlock.ticket << endl;*/ \
+    }                                                                          \
   } while ((__p_status = _xbegin()) != _XBEGIN_STARTED)
 
 #define COMMIT_TRANSACTION(xId)              \

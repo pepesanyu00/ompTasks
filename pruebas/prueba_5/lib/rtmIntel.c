@@ -28,8 +28,6 @@ struct TicketLock g_ticketlock; //Inicializo en statsFileInit el ticketlock
 volatile int sense = 0;
 volatile int count = 0;
 
-pthread_mutex_t bar_lock;
-pthread_mutex_t global_lock;
 
 fback_lock_t g_fallback_lock = {.ticket = 0, .turn = 1};
 

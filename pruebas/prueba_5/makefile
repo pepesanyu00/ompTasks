@@ -4,13 +4,17 @@ LFLAGS = -lm -fopenmp -mrtm
 all: tasks 
 
 tasks: main.cpp lib/rtmIntel.c lib/stask.cpp
-	g++ $(CFLAGS) main.cpp lib/rtmIntel.c lib/stask.cpp -o tasks $(LFLAGS)
+	g++  $(CFLAGS) main.cpp lib/rtmIntel.c lib/stask.cpp -o tasks $(LFLAGS)
 
 sin_trans: sin_transaccion.cpp lib/rtmIntel.c
 	g++ -fopenmp sin_transaccion.cpp lib/rtmIntel.c -o sin_transaccion
 
+copy: main.cpp lib/rtmIntel.c lib/stask.cpp
+	g++ -g $(CFLAGS) main_copy.cpp lib/rtmIntel.c lib/stask.cpp -o tasks $(LFLAGS)
+
 clean_sin:
 	rm -f sin_transaccion
+
 
 clean:
 	rm -f tasks 

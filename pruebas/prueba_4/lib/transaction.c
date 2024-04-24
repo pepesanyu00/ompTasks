@@ -48,6 +48,18 @@ int statsFileInit(long thCount) {
   char ext[25];
   //Saco la extensión con identificador de proceso para tener un archivo único
   sprintf(ext,"stats/%d.stats", getpid());
+  //El nombre del archivo es la llamada entera al programa con sus parámetros
+  /*strcat(fname,"./results/");
+  strcat(fname, &(argv[0][2])); //Pongo el nombre del programa sin el ./
+  for(i=1; i<argc; i++) {
+    if (strstr(argv[i],"inputs/")) {
+      strcat(fname, "-");
+      strcat(fname, &(argv[i][7])); //Si hay un fichero con directorio quito el directorio
+    } else {
+      if(!strstr(argv[i],"-")) strcat(fname, "-"); //Si no hay guiones en las opciones pongo un guión
+      strcat(fname, argv[i]);
+    }
+  }*/
   strncpy(fname, ext, sizeof(fname) - 1);
   printf("Nombre del fichero: %s\n",fname);
   //Inicio los arrays de estadísticas

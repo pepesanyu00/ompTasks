@@ -45,7 +45,7 @@
     if (__p_retries > MAX_RETRIES)                                                             \
     {                                                                                          \
       /*uint32_t myticket = __sync_add_and_fetch(&(g_fallback_lock.ticket), 1); */             \
-      uint32_t myticket = __atomic_add_fetch(&(g_fallback_lock.ticket), 1, __ATOMIC_SEQ_CST);  \
+      uint32_t myticket = __atomic_add_fetch(&(g_fallback_lock.ticket), 1, __ATOMIC_SEQ_CST); \
       while (myticket != g_fallback_lock.turn)                                                 \
         ;                                                                                      \
       break;                                                                                   \

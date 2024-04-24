@@ -59,10 +59,10 @@ extern std::atomic<long> xIdCounter;
 
 #define COMMIT_STASK_IN(in)                                        \
     /*PRINT_MAP(map);*/                                                    \
-    while(map[&in] == false){                                                    \
-        /*BEGIN_ESCAPE;*/                                                      \
+    while(map[&in] == false && g_ticketlock.ticket < 1){                                                    \
+        BEGIN_ESCAPE;                                                      \
         CPU_RELAX();                                    \
-        /*END_ESCAPE;  */                                                      \
+        END_ESCAPE;                                                        \
     }                                                                            \
     COMMIT_TRANSACTION(xId);        
 
@@ -89,7 +89,7 @@ extern std::atomic<long> xIdCounter;
 
 #define COMMIT_STASK_INOUT(in, out)                                           \
     map[&out] = true;                                                      \
-    while(map[&in] == false){                                                    \
+    while(map[&in] == false && g_ticketlock.ticket < 1){                                                    \
         BEGIN_ESCAPE;                                                      \
         CPU_RELAX();                                    \
         END_ESCAPE;                                                        \
